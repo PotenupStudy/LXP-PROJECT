@@ -18,7 +18,7 @@ public class QueryUtil {
 
     private static void loadQueries() {
         try {
-            InputStream is = QueryUtil.class.getClassLoader().getResourceAsStream("queries.xml");
+            InputStream is = QueryUtil.class.getClassLoader().getResourceAsStream("category_queries.xml");
 
             if (is == null) {
                 throw new RuntimeException("queries.xml not found");

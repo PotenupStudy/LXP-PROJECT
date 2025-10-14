@@ -20,7 +20,7 @@ public class CategoryDAO {
 
     public List<Category> getAllCategory() {
         List<Category> categories = new ArrayList<>();
-        String sql = QueryUtil.getQuery("getAllCategory");
+        String sql = QueryUtil.getQuery("category.getAllCategories");
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             ResultSet rs = pstmt.executeQuery();
@@ -43,9 +43,9 @@ public class CategoryDAO {
     }
 
     public Long saveCategory(Category category) throws SQLException {
-        String sql = QueryUtil.getQuery("saveCategory");
+        String sql = QueryUtil.getQuery("category.saveCategory");
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
+            System.out.println(sql);
             pstmt.setString(2, category.category_name());
             pstmt.setInt(3, category.sort_order());
 

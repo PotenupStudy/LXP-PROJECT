@@ -36,4 +36,8 @@ public class CategoryService {
                 .findFirst()
                 .orElse(null);
     }
+
+    public void saveCategory(Category category) {
+
+    }
 }
