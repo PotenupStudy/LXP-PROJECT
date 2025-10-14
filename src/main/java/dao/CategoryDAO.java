@@ -42,15 +42,11 @@ public class CategoryDAO {
         return categories;
     }
 
-    public Long saveCategory(Category category) throws SQLException {
-        String sql = QueryUtil.getQuery("category.saveCategory");
+    public Long saveCategory(String addCategoryName) throws SQLException {
+        String sql = QueryUtil.getQuery("category.save");
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            System.out.println(sql);
-            pstmt.setString(2, category.category_name());
-            pstmt.setInt(3, category.sort_order());
-
+            pstmt.setString(1, addCategoryName);
             int result =  pstmt.executeUpdate();
-
             if (result > 0) {
                 try (ResultSet rs = pstmt.getGeneratedKeys()) {
                     if (rs.next()) {

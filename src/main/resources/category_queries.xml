@@ -2,13 +2,12 @@
 
 <properties>
     <query key="category.save">
-        INSERT INTO category(
-        category_id, name, sort_order, insert_date, modify_date
-        ) VALUES (?, ?, ?, ?, ?)
+        INSERT INTO category (name, sort_order) VALUES (?, (SELECT next_order FROM (SELECT COALESCE(MAX(sort_order), 0)
+        + 1 AS next_order FROM category) AS temp))
     </query>
 
     <query key="category.getAllCategories">
-    select * from category
+        select * from category
     </query>
 
     <query key="category.findById">
@@ -19,7 +18,7 @@
         UPDATE category SET title = ?, description =? Where course_id =?
     </query>
 
-    <query key = "category.delete">
+    <query key="category.delete">
         DELETE FROM category where category_id = ?
     </query>
 </properties>

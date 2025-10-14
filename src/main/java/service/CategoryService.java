@@ -2,6 +2,7 @@ package service;
 
 import dao.CategoryDAO;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 import model.Category;
@@ -35,7 +36,7 @@ public class CategoryService {
                 .orElse(null);
     }
 
-    public void saveCategory(Category category) {
-
+    public void saveCategory(String addCategoryName) throws SQLException {
+        categoryDAO.saveCategory(addCategoryName);
     }
 }
