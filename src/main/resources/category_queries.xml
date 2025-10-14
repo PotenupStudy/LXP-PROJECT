@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<properties>
+    <query key="category.save">
+        INSERT INTO category(
+        category_id, name, sort_order, insert_date, modify_date
+        ) VALUES (?, ?, ?, ?, ?)
+    </query>
+
+    <query key="category.getAllCategories">
+    select * from category
+    </query>
+
+    <query key="category.findById">
+        SELECT * FROM category WHERE course_id = ?
+    </query>
+
+    <query key="category.update">
+        UPDATE category SET title = ?, description =? Where course_id =?
+    </query>
+
+    <query key = "category.delete">
+        DELETE FROM category where category_id = ?
+    </query>
+</properties>

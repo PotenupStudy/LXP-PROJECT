@@ -18,7 +18,7 @@ public class CategoryService {
 
             List<Category> categories = categoryDAO.getAllCategory();
             for (Category category : categories) {
-                System.out.printf("[%d] %s\n", category.getSort_order(), category.getName());
+                System.out.printf("[%d] %s\n", category.sort_order(), category.category_name());
             }
             return categories;
         } catch (SQLException e) {
@@ -32,7 +32,7 @@ public class CategoryService {
         int choice = Integer.parseInt(sc.nextLine());
 
         return categories.stream()
-                .filter(category -> category.getSort_order() == choice)
+                .filter(category -> category.sort_order() == choice)
                 .findFirst()
                 .orElse(null);
     }
