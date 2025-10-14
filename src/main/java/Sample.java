@@ -7,7 +7,13 @@ import utill.QueryUtil;
 
 public class Sample {
     public static void main(String[] args) {
-        CategoryService categoryService = new CategoryService();
-        categoryService.selectCategory();
+        try{
+            Connection conn = JDBCConnection.getConnection();
+            CategoryService categoryService = new CategoryService(conn);
+            categoryService.selectCategory();
+        }catch(Exception e){
+
+        }
+
     }
 }
