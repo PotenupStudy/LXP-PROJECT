@@ -232,6 +232,21 @@ class CourseServiceTest {
         System.out.println("=== DELETE 테스트 완료 ===\n");
     }
 
+    @Test
+    @DisplayName("EXISTS CHECK - 강좌 존재여부")
+    void courseExistsTest() {
+        System.out.println("=== EXISTS CHECK 테스트 시작 ===");
+
+        // When
+        Boolean result = courseService.courseExists(4);
+
+        // Then
+        assertTrue(result, "course_id가 " + 4 + "인 로우 존재");
+
+        System.out.println("💾 강좌 존재여부 테스트 성공! ID: " + 4);
+        System.out.println("=== EXISTS CHECK 테스트 완료 ===\n");
+    }
+
     // ========================================
     // 통합 CRUD 플로우 테스트 (보너스)
     // ========================================

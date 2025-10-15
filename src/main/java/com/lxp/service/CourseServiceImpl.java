@@ -17,6 +17,12 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public Boolean courseExists(long courseId) {
+        return courseDao.existById(courseId);
+    }
+
+
+    @Override
     public List<Course> courseFindAll(){
         return courseDao.findAll();
     }

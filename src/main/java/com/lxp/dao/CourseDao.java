@@ -15,6 +15,24 @@ public class CourseDao {
         this.connection = connection;
     }
 
+    public boolean existById(long courseId) {
+        String query = QueryUtil.getQuery("course.courseFindExistById");
+
+        try(PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setLong(1, courseId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getBoolean("row_count");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("[error][ " + "CourseDao" + "." + "delete" + "] "
+                    + e.getMessage());
+        }
+
+        return false;
+    }
+
     public List<Course> findAll(){
         List<Course> courses = new ArrayList<>();
         String sql = QueryUtil.getQuery("course.findAll");
@@ -112,4 +130,6 @@ public class CourseDao {
 
         return (long) rowsAffected;
     }
+
+
 }

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <properties>
+    <query key="course.courseFindExistById">
+            SELECT
+                COUNT(course_id) AS row_count
+            FROM Course
+            WHERE course_id = ?;
+    </query>
     <query key="course.findAll">
         SELECT
             course_id,

@@ -5,12 +5,13 @@ import java.util.List;
 
 public interface CourseService {
 
-    public List<Course> courseFindAll();
+    Boolean courseExists(long courseId);
 
-    // 과정 등록
-    public Long courseSave(Course course);
+    List<Course> courseFindAll();
 
-    public Long courseUpdateByCourseId(Course course) ;
+    Long courseSave(Course course);
 
-    public Long courseDeleteByCourseId(Course course) ;
+    Long courseUpdateByCourseId(Course course) ;
+
+    Long courseDeleteByCourseId(Course course) ;
 }
