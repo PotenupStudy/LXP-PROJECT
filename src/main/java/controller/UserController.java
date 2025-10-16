@@ -62,4 +62,14 @@ public class UserController {
     public ViewUserDto viewUser() {
         return userService.viewUser(SignInUtil.userId);
     }
+
+    /**
+     * 회원 정보 수정 요청
+     * @param name   수정 할 이름
+     * @param userId 사용자 ID
+     * @return 수정 되었는지 여부
+     */
+    public int editUserInfo(String name, long userId) {
+        return userService.editUserInfo(name, userId);
+    }
 }

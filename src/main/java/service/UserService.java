@@ -76,4 +76,18 @@ public class UserService {
         }
     }
 
+    /**
+     * 사용자 정보 수정
+     * @param name      변경할 사용자 이름
+     * @param userId    사용자 ID
+     * @return 수정 성공 여부
+     */
+    public int editUserInfo(String name, long userId) {
+        try {
+            return userDao.updateUser(name, userId);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
 }

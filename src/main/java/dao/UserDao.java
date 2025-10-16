@@ -122,4 +122,26 @@ public class UserDao {
             return null;
         }
     }
+
+    /**
+     * user id에 해당하는 유저 정보 업데이트
+     * @param name   사용자 이름
+     * @param userId 사용자 ID
+     * @return 변경 되었는지의 여부
+     * @throws SQLException
+     */
+    public int updateUser(String name, long userId) throws SQLException {
+        String query = QueryUtil.getQuery("user.update");
+
+        int rowsAffected = 0;
+
+        try(PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, name);
+            pstmt.setLong(2, userId);
+
+            rowsAffected = pstmt.executeUpdate();
+        }
+
+        return rowsAffected;
+    }
 }

@@ -15,4 +15,9 @@
         INSERT INTO USER (name, email, role)
         VALUES(?, ?, ?)
     </query>
+    <query key="user.update">
+        UPDATE user SET
+        name=?
+        WHERE user_id=?
+    </query>
 </properties>

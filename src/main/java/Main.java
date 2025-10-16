@@ -97,7 +97,13 @@ public class Main {
                 case 4 -> {     // 회원 정보 조회
                     System.out.println(userController.viewUser());
                 }
-                case 5 -> System.out.println("회원 정보 수정");
+                case 5 -> {
+                    System.out.print("변경 할 이름을 입력하세요 : ");
+                    String name = sc.nextLine();
+                    if(userController.editUserInfo(name, SignInUtil.userId) > 0) {
+                        System.out.println("변경 완료");
+                    }
+                }
                 case 6 -> System.out.println("회원 탈퇴");
                 case 7 -> {
                     return;
