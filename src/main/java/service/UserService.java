@@ -90,4 +90,18 @@ public class UserService {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * 사용자 탈퇴
+     * @param userId 탈퇴할 사용자 ID
+     * @return 탈퇴 성공 여부
+     */
+    public int withdrawalUser(long userId) {
+        try {
+            return userDao.deleteUser(userId);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
 }

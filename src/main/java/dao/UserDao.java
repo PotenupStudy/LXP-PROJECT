@@ -144,4 +144,25 @@ public class UserDao {
 
         return rowsAffected;
     }
+
+    /**
+     * 사용자 삭제(Soft delete)
+     * @param userId 삭제할 사용자 ID
+     * @return 삭제 성공 여부
+     * @throws SQLException
+     */
+    public int deleteUser(long userId) throws SQLException {
+        String query = QueryUtil.getQuery("user.softDelete");
+
+        int rowsAffected = 0;
+
+        try(PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            pstmt.setLong(2, userId);
+
+            rowsAffected = pstmt.executeUpdate();
+        }
+
+        return rowsAffected;
+    }
 }

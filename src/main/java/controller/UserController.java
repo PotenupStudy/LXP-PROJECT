@@ -72,4 +72,13 @@ public class UserController {
     public int editUserInfo(String name, long userId) {
         return userService.editUserInfo(name, userId);
     }
+
+    /**
+     * 회원 탈퇴 요청
+     * @param userId 탈퇴 할 사용자 ID
+     * @return 탈퇴 성공 여부
+     */
+    public int withdrawalUser(long userId) {
+        return userService.withdrawalUser(userId);
+    }
 }

@@ -20,4 +20,9 @@
         name=?
         WHERE user_id=?
     </query>
+    <query key="user.softDelete">
+        UPDATE user SET
+        delete_date=?
+        WHERE user_id=?
+    </query>
 </properties>

@@ -104,7 +104,16 @@ public class Main {
                         System.out.println("변경 완료");
                     }
                 }
-                case 6 -> System.out.println("회원 탈퇴");
+                case 6 -> {
+                    System.out.print("정말 탈퇴하시겠습니까?(Y/N) : ");
+                    String cmd = sc.nextLine();
+
+                    if(cmd.equals("N")) continue;
+
+                    if(userController.withdrawalUser(SignInUtil.userId) > 0) {
+                        System.out.println("회원 탈퇴 완료");
+                    }
+                }
                 case 7 -> {
                     return;
                 }
