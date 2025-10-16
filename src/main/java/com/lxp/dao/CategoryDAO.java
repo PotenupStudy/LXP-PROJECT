@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import com.lxp.model.Category;
@@ -92,7 +94,9 @@ public class CategoryDAO {
     public Category updateCategoryName(Category category) throws SQLException {
         logger.info("[Update CategoryName] DB 조작 시작");
         String sql = QueryUtil.getQuery("category.updateName");
-        try (PreparedStatement pstmt = conn.prepareStatement(sql,RETURN_GENERATED_KEYS)) {
+        logger.debug(sql);
+        logger.debug("Update Category : {}", category.toString());
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, category.getCategory_name());
             pstmt.setLong(2, category.getCategory_id());
             int result =pstmt.executeUpdate();
@@ -100,9 +104,9 @@ public class CategoryDAO {
             if (result == 0) {
                 throw new SQLException("수정하려는 데이터가 존재하지 않습니다.");
             }
-        }catch (SQLException e){
-            logger.error("[updateCategoryName] DB통신 오류러 발생 : {}",e);
-            throw e;
+        }catch (SQLIntegrityConstraintViolationException e){
+            logger.error("[updateCategoryName] 카테고리 이름 중복 오류 발생 : {}",e);
+            throw new IllegalArgumentException("카테고리 이름은 중복 될 수 없습니다.");
         }
         return category;
     }

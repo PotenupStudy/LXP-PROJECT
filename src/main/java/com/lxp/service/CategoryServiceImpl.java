@@ -1,7 +1,10 @@
 package com.lxp.service;
 
+import static com.lxp.utill.Validator.selectValidator;
+
 import com.lxp.dao.CategoryDAO;
 import com.lxp.model.Category;
+import com.lxp.utill.InputUtil;
 import com.lxp.utill.Logging;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -10,14 +13,18 @@ import java.util.Scanner;
 
 public class CategoryServiceImpl implements CategoryService {
     private final Logging logger;
-    private final Connection conn;
     private final CategoryDAO categoryDAO;
-    Scanner sc = new Scanner(System.in);
+    private final Scanner sc =  new Scanner(System.in);
+
+    //테스트용 생성자
+    public CategoryServiceImpl(CategoryDAO categoryDAO) {
+        this.categoryDAO = categoryDAO;
+        this.logger = new Logging(CategoryServiceImpl.class);
+    }
+
 
     public CategoryServiceImpl(Connection conn) {
-        this.conn = conn;
-        this.categoryDAO = new CategoryDAO(conn);
-        this.logger = new Logging(CategoryServiceImpl.class);
+        this(new CategoryDAO(conn)); // this()를 사용하여 DAO를 주입하는 생성자를 호출
     }
 
     @Override
@@ -42,46 +49,66 @@ public class CategoryServiceImpl implements CategoryService {
         logger.info("[CategoryService] selected category 시작");
         List<Category> categories = getAllCategories();
 
-        System.out.print("카테고리 번호를 선택하세요 : ");
-        int choice = Integer.parseInt(sc.nextLine());
+        int categorySize = categories.size() ;
 
-        if (choice < 1 || choice > categories.size()) {
-            throw new IllegalArgumentException("해당 번호의 카테고리가 없습니다.");
-        }
+        int select = selectValidator(categorySize);
 
-        Category selectedCategory = categories.get(choice - 1);
+        Category selectedCategory = categories.get(select - 1);
         logger.debug("[CategoryService] Selected Category : {}", selectedCategory);
 
         return selectedCategory;
     }
-
-
     @Override
-    public void saveCategory(String categoryName) throws SQLException {
+    public void saveCategory() throws SQLException {
         logger.info("[CategoryService] Save Category 시작");
-        Category savedCategory = Category.forCreation(categoryName);
-        logger.debug("[CategoryService] Save Category : {}", categoryName);
+        Category savedCategory = null;
+        do {
+            String categoryName = InputUtil.readString("추가할 카테고리 이름을 입력하세요: ");
+            try {
+                savedCategory = Category.forNewCreate(categoryName);
+            } catch (IllegalArgumentException e) {
+                System.err.println("⚠️ 오류: " + e.getMessage());
+            }
+        } while (savedCategory == null);
+
+        logger.debug("[CategoryService] Save Category : {}", savedCategory);
         categoryDAO.saveCategory(savedCategory);
     }
 
     @Override
     public void deleteCategory() throws SQLException {
         logger.info("[CategoryService] Delete Category 시작");
+        System.out.println("삭제할 카테고리를 선택해 주세요.");
         Category deletedCategory = selectCategory();
         logger.debug("[CategoryService] Delete Category : {}", deletedCategory);
         categoryDAO.deleteCategoryById(deletedCategory);
     }
 
     @Override
-    public Category updateCategoryName() throws SQLException {
+    public void updateCategoryName() throws SQLException {
         logger.info("[CategoryService] Update Category 시작");
-        Category updatedCategory = selectCategory();
+        System.out.println("수정할 카테고리를 선택해 주세요.");
+        Category tmp = selectCategory();
 
-        System.out.println("이름변경 : ");
+        if (tmp == null) {
+            System.out.println("수정할 카테고리가 없습니다.");
+            return;
+        }
+        boolean isUpdateSuccessful = false;
+        do {
+            String updateCategoryName = InputUtil.readString("변경할 이름을 입력해주세요");
 
-        updatedCategory.setCategory_name(sc.nextLine());
-        logger.debug("[CategoryService] Updated Category : {}", updatedCategory)
-        ;
-        return categoryDAO.updateCategoryName(updatedCategory);
+            Category updatedCategory = Category.forUpdate(tmp.getCategory_id(), updateCategoryName);
+            logger.debug("[CategoryService] Updated Category : {}", updatedCategory);
+            try {
+                categoryDAO.updateCategoryName(updatedCategory);
+                System.out.printf("[%s]의 이름이 [%s]로 변경되었습니다.\n", tmp.getCategory_name(), updatedCategory.getCategory_name());
+
+                isUpdateSuccessful = true;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        } while (!isUpdateSuccessful);
+
     }
 }

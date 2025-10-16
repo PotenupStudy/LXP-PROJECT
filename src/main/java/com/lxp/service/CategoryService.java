@@ -9,9 +9,9 @@ public interface CategoryService {
 
     Category selectCategory() throws SQLException;
 
-    void saveCategory(String categoryName) throws SQLException;
+    void saveCategory() throws SQLException;
 
     void deleteCategory() throws SQLException;
 
-    Category updateCategoryName() throws SQLException;
+    void updateCategoryName() throws SQLException;
 }

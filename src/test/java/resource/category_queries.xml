@@ -15,7 +15,7 @@
     </query>
 
     <query key="category.updateName">
-        UPDATE category SET name = ? WHERE category_id =?
+        UPDATE category SET name = ? Where category_id =?
     </query>
 
     <query key="category.delete">
