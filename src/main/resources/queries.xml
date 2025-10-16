@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<properties>
+    <query key="user.findAll">
+        SELECT *
+        FROM USER;
+    </query>
+    <query key="user.findByEmail">
+        SELECT *
+        FROM USER
+        WHERE email=?
+    </query>
+    <query key="user.save">
+        INSERT INTO USER (name, email, role)
+        VALUES(?, ?, ?)
+    </query>
+</properties>
