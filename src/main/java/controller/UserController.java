@@ -2,25 +2,24 @@ package controller;
 
 import model.Role;
 import model.dto.RegisterUserDto;
+import model.dto.ViewUserDto;
 import service.UserService;
+import util.SignInUtil;
 
 import java.sql.Connection;
 
 /**
  * UserController
- *
  * - User 관련 요청을 받아서 Service에게 전달
  * - 만들어진 User 관련 응답을 반환
  */
 public class UserController {
 
-    private final Connection conn;
-    private UserService userService;
+    private final UserService userService;
 
-    private static String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    private static final String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
     public UserController(Connection conn) {
-        this.conn = conn;
         userService = new UserService(conn);
     }
 
@@ -46,4 +45,9 @@ public class UserController {
 
         return userService.registerUser(registerUserDto);
     }
+
+    public boolean signInUser(String email) {
+        return userService.signInUser(email);
+    }
+
 }

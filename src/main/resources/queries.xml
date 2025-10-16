@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <properties>
-    <query key="user.findAll">
+    <query key="user.find">
         SELECT *
-        FROM USER;
+        FROM USER
+        WHERE user_id=?
     </query>
     <query key="user.findByEmail">
         SELECT *

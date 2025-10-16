@@ -4,14 +4,13 @@ import java.time.LocalDateTime;
 
 /**
  * User Model
- *
- * userId     : 유저 ID
- * name       : 유저 이름
- * email      : 유저 이메일
- * role       : 유저 역할 (student: 학생, instructor: 교사)
- * insertDate : 생성 일자
- * modifyDate : 수정 일자
- * deleteDate : 삭제 일자
+ * - userId     : 유저 ID
+ * - name       : 유저 이름
+ * - email      : 유저 이메일
+ * - role       : 유저 역할 (student: 학생, instructor: 교사)
+ * - insertDate : 생성 일자
+ * - modifyDate : 수정 일자
+ * - deleteDate : 삭제 일자
  */
 public class User {
 

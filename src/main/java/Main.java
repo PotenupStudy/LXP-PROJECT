@@ -1,12 +1,14 @@
 import config.JDBCConnection;
 import controller.UserController;
 import model.dto.RegisterUserDto;
+import util.SignInUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
         try {
             Connection conn = JDBCConnection.getConnection();
@@ -27,7 +29,7 @@ public class Main {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage() + "\n" + e.getStackTrace()[0]);
         }
     }
 
@@ -42,10 +44,11 @@ public class Main {
             System.out.println("===================================");
             System.out.println("== 1. 회원 가입                   ==");
             System.out.println("== 2. 로그인                      ==");
-            System.out.println("== 3. 회원 정보 조회               ==");
-            System.out.println("== 4. 회원 정보 수정               ==");
-            System.out.println("== 5. 회원 탈퇴                   ==");
-            System.out.println("== 6. 이전으로 돌아가기             ==");
+            System.out.println("== 3. 로그아웃                    ==");
+            System.out.println("== 4. 회원 정보 조회               ==");
+            System.out.println("== 5. 회원 정보 수정               ==");
+            System.out.println("== 6. 회원 탈퇴                   ==");
+            System.out.println("== 7. 이전으로 돌아가기             ==");
             System.out.println("===================================");
             int num = sc.nextInt();
             sc.nextLine();
@@ -70,11 +73,31 @@ public class Main {
                         System.out.println(e.getMessage());
                     }
                 }
-                case 2 -> System.out.println("로그인");
-                case 3 -> System.out.println("회원 정보 조회");
-                case 4 -> System.out.println("회원 정보 수정");
-                case 5 -> System.out.println("회원 탈퇴");
-                case 6 -> {
+                case 2 -> {
+                    if(SignInUtil.isSignIn) {
+                        System.out.println("이미 로그인 되어 있습니다.");
+                        continue;
+                    }
+                    System.out.print("이메일을 입력하세요 : ");
+                    String email = sc.nextLine();
+
+                    if(userController.signInUser(email)) {
+                        System.out.println("로그인 성공");
+                    }
+                }
+                case 3 -> {
+                    if(!SignInUtil.isSignIn) {
+                        System.out.println("로그인 되지 않았습니다.");
+                        continue;
+                    }
+
+                    SignInUtil.isSignIn = false;
+                    SignInUtil.userId = 0;
+                }
+                case 4 -> System.out.println("회원 정보 조회");
+                case 5 -> System.out.println("회원 정보 수정");
+                case 6 -> System.out.println("회원 탈퇴");
+                case 7 -> {
                     return;
                 }
                 default -> System.out.println("잘못 된 입력입니다.");
