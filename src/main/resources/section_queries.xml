@@ -22,8 +22,8 @@
 
     <query key="section.update">
         UPDATE Section
-        SET title = ?
-        WHERE course_id = ? AND order_num = ?
+        SET title = ?, order_num = ?
+        WHERE section_id = ?
     </query>
 
     <query key="section.delete">
@@ -40,6 +40,7 @@
     <query key="section.findById">
         SELECT
         section_id,
+        course_id,
         title,
         order_num
         FROM
