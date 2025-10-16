@@ -14,6 +14,12 @@
         WHERE course_id = ? AND order_num = ?
     </query>
 
+    <query key="section.existBySectionId">
+        SELECT COUNT(*)
+        FROM Section
+        WHERE section_id = ?;
+    </query>
+
     <query key="section.update">
         UPDATE Section
         SET title = ?
@@ -22,7 +28,7 @@
 
     <query key="section.delete">
         DELETE FROM Section
-        WHERE course_id = ? AND order_num = ?
+        WHERE section_id = ?
     </query>
 
     <query key="course.existById">
@@ -31,8 +37,20 @@
         WHERE course_id = ?
     </query>
 
+    <query key="section.findById">
+        SELECT
+        section_id,
+        title,
+        order_num
+        FROM
+        Section
+        WHERE
+        section_id = ?
+    </query>
+
     <query key="section.findByCourseId">
         SELECT
+        section_id,
         title,
         order_num
         FROM

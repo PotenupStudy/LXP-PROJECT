@@ -1,91 +1,113 @@
 package com.lxp.model;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Section {
-    private long sectionId;
-    private long courseId;
+    private Long sectionId;
+    private Long courseId;
     private String title;
-    private int orderNum;
+    private Integer orderNum;
     private LocalDateTime insertDate;
     private LocalDateTime modifyDate;
-    private LocalDateTime deleteDate;
 
-    public Section(long courseId, String title, int orderNum) {
+    public static Section createSection(Long courseId, String title, Integer orderNum) {
+        validateForCreate(courseId, title, orderNum);
+        return new Section(courseId, title, orderNum);
+    }
+
+    public static Section from(Long sectionId, Long courseId, String title, Integer orderNum) {
+        return new Section(sectionId, courseId, title, orderNum);
+    }
+
+    private Section(Long courseId, String title, Integer orderNum) {
         this.courseId = courseId;
         this.title = title;
         this.orderNum = orderNum;
         this.insertDate = LocalDateTime.now();
     }
 
-    // Getter 및 Setter 메소드
-    public long getSectionId() {
+    private Section(Long sectionId, Long courseId, String title, Integer orderNum) {
+        this.sectionId = sectionId;
+        this.courseId = courseId;
+        this.title = title;
+        this.orderNum = orderNum;
+    }
+
+    private static void validateForCreate(Long courseId, String title, Integer orderNum) {
+        validateCourseId(courseId);
+        validateTitle(title);
+        validateOrderNum(orderNum);
+    }
+
+    public void updateInfo(String newTitle, Integer newOrderNum) {
+        validateTitle(newTitle);
+        validateOrderNum(newOrderNum);
+
+        this.title = newTitle;
+        this.orderNum = newOrderNum;
+        this.modifyDate = LocalDateTime.now();
+    }
+
+    /**
+     * 강좌 ID 검증 (필수, 양수)
+     */
+    private static void validateCourseId(Long courseId) {
+        Objects.requireNonNull(courseId, "강좌 ID는 필수입니다.");
+
+        if (courseId <= 0) {
+            throw new IllegalArgumentException("강좌 ID는 반드시 양수입니다.");
+        }
+    }
+
+    /**
+     * 색션명 검증 (필수, 길이 100 이하)
+     */
+    private static void validateTitle(String title) {
+        Objects.requireNonNull(title, "섹션 제목은 필수입니다.");
+
+        if (title.length() > 100) {
+            throw new IllegalArgumentException("섹션 제목은 100자를 넘어가면 안됩니다.");
+        }
+    }
+
+    /**
+     * 섹션 번호 검증 (필수, 양수)
+     */
+    private static void validateOrderNum(Integer orderNum) {
+        Objects.requireNonNull(orderNum, "섹션 번호는 필수입니다.");
+
+        if (orderNum <= 0) {
+            throw new IllegalArgumentException("섹션 번호는 반드시 양수입니다.");
+        }
+    }
+
+    public Long getSectionId() {
         return sectionId;
     }
 
-    public void setSectionId(long sectionId) {
-        this.sectionId = sectionId;
-    }
-
-    public long getCourseId() {
+    public Long getCourseId() {
         return courseId;
-    }
-
-    public void setCourseId(long courseId) {
-        this.courseId = courseId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getOrderNum() {
+    public Integer getOrderNum() {
         return orderNum;
     }
 
-    public void setOrderNum(int orderNum) {
-        this.orderNum = orderNum;
-    }
-
-    public LocalDateTime getInsertDate() {
-        return insertDate;
-    }
-
-    public void setInsertDate(LocalDateTime insertDate) {
-        this.insertDate = insertDate;
-    }
-
-    public LocalDateTime getModifyDate() {
-        return modifyDate;
-    }
-
-    public void setModifyDate(LocalDateTime modifyDate) {
-        this.modifyDate = modifyDate;
-    }
-
-    public LocalDateTime getDeleteDate() {
-        return deleteDate;
-    }
-
-    public void setDeleteDate(LocalDateTime deleteDate) {
-        this.deleteDate = deleteDate;
-    }
-
-    // toString 메소드
     @Override
     public String toString() {
-        return "Section{" +
-                "sectionId=" + sectionId +
-                ", courseId=" + courseId +
-                ", title='" + title + '\'' +
-                ", orderNum=" + orderNum +
-                ", insertDate=" + insertDate +
-                ", modifyDate=" + modifyDate +
-                ", deleteDate=" + deleteDate +
-                '}';
+        return """
+           Section {
+             sectionId  = %d,
+             courseId   = %d,
+             title      = '%s',
+             orderNum   = %d,
+             insertDate = %s,
+             modifyDate = %s
+           }""".formatted(sectionId, courseId, title, orderNum, insertDate, modifyDate);
     }
 }
