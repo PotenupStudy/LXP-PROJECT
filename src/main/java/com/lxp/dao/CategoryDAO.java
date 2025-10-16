@@ -43,6 +43,7 @@ public class CategoryDAO {
             throw e;
         }
         logger.info("총 {}개의 카테고리 조회",categories.size());
+        
         //logger.info("{}",categories);
         return categories;
     }
