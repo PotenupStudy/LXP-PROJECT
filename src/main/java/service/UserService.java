@@ -51,8 +51,7 @@ public class UserService {
                 throw new RuntimeException("사용자를 찾을 수 없습니다.");
             }
 
-            SignInUtil.isSignIn = true;
-            SignInUtil.userId = foundUser.getUserId();
+            SignInUtil.signIn(foundUser.getUserId());
 
             return true;
         } catch (SQLException e) {

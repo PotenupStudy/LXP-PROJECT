@@ -1,6 +1,5 @@
 package controller;
 
-import model.Role;
 import model.dto.RegisterUserDto;
 import model.dto.ViewUserDto;
 import service.UserService;
@@ -17,8 +16,6 @@ public class UserController {
 
     private final UserService userService;
 
-    private static final String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-
     public UserController(Connection conn) {
         userService = new UserService(conn);
     }
@@ -28,20 +25,8 @@ public class UserController {
      * @param registerUserDto 회원 등록에 관한 정보 DTO
      */
     public long registerUser(RegisterUserDto registerUserDto) {
-        // 입력 값 예외 처리
-        if(registerUserDto.getName().isBlank()) {
-            throw new IllegalArgumentException("이름을 입력해 주세요.");
-        } else if(registerUserDto.getName().length() > 100) {
-            throw new IllegalArgumentException("이름은 100자를 넘을 수 없습니다.");
-        } else if(registerUserDto.getEmail().isBlank()) {
-            throw new IllegalArgumentException("이메일을 입력해 주세요.");
-        } else if(registerUserDto.getEmail().length() > 255) {
-            throw new IllegalArgumentException("이메일은 255자를 넘을 수 없습니다.");
-        } else if(!registerUserDto.getEmail().matches(emailRegex)) {
-            throw new IllegalArgumentException("올바른 이메일 형식이 아닙니다.");
-        } else if(registerUserDto.getRole().equals(Role.ANONYMOUS)) {
-            throw new IllegalArgumentException("올바른 역할이 아닙니다.");
-        }
+        // 입력 값 검증
+        registerUserDto.validate();
 
         return userService.registerUser(registerUserDto);
     }
@@ -52,6 +37,9 @@ public class UserController {
      * @return 로그인 성공 여부
      */
     public boolean signInUser(String email) {
+        // 입력 값 검증(이메일)
+        SignInUtil.validateEmail(email);
+
         return userService.signInUser(email);
     }
 
@@ -59,8 +47,8 @@ public class UserController {
      * 회원 정보 조회 요청
      * @return 요청 대상 회원의 정보
      */
-    public ViewUserDto viewUser() {
-        return userService.viewUser(SignInUtil.userId);
+    public ViewUserDto viewUser(long userId) {
+        return userService.viewUser(userId);
     }
 
     /**
@@ -70,6 +58,9 @@ public class UserController {
      * @return 수정 되었는지 여부
      */
     public int editUserInfo(String name, long userId) {
+        // 입력 값 검증(이름)
+        SignInUtil.validateName(name);
+
         return userService.editUserInfo(name, userId);
     }
 

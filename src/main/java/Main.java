@@ -91,13 +91,20 @@ public class Main {
                         continue;
                     }
 
-                    SignInUtil.isSignIn = false;
-                    SignInUtil.userId = 0;
+                    SignInUtil.signOut();
                 }
                 case 4 -> {     // 회원 정보 조회
-                    System.out.println(userController.viewUser());
+                    if(!SignInUtil.isSignIn) {
+                        System.out.println("로그인 되지 않았습니다.");
+                        continue;
+                    }
+                    System.out.println(userController.viewUser(SignInUtil.userId));
                 }
                 case 5 -> {
+                    if(!SignInUtil.isSignIn) {
+                        System.out.println("로그인 되지 않았습니다.");
+                        continue;
+                    }
                     System.out.print("변경 할 이름을 입력하세요 : ");
                     String name = sc.nextLine();
                     if(userController.editUserInfo(name, SignInUtil.userId) > 0) {
@@ -105,6 +112,10 @@ public class Main {
                     }
                 }
                 case 6 -> {
+                    if(!SignInUtil.isSignIn) {
+                        System.out.println("로그인 되지 않았습니다.");
+                        continue;
+                    }
                     System.out.print("정말 탈퇴하시겠습니까?(Y/N) : ");
                     String cmd = sc.nextLine();
 
