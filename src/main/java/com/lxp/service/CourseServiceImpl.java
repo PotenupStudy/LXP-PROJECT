@@ -52,12 +52,7 @@ public class CourseServiceImpl implements CourseService {
         Long result = null;
         try{
             course.validateForUpdate();
-            result = courseDao.update(course);
-            if(result < 0){
-                System.out.println("log : 과정수정 실패");
-                return null;
-            }
-            return result;
+            return courseDao.update(course);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("log : error");
@@ -67,13 +62,15 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Long courseDeleteByCourseId(Course course) {
+    public Long courseDeleteByCourseId(int course_id) {
         Long result = null;
         try{
-            course.validateForDelete();
-            result = courseDao.delete(course.getCourseId());
+            if(course_id < 0)
+                throw new IllegalArgumentException("삭제");
+            result = courseDao.delete(course_id);
+
             if(result < 0){
-                System.out.println("log : 과정등록 실패");
+                System.out.println("log : 강좌삭제 실패");
                 return null;
             }
             return result;

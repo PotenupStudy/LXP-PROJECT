@@ -215,7 +215,7 @@ class CourseServiceTest {
 
         // When - 삭제
         System.out.println("3️⃣  강좌 삭제 중...");
-        Long deleteResult = courseService.courseDeleteByCourseId(courseToDelete);
+        Long deleteResult = courseService.courseDeleteByCourseId(savedId.intValue());
 
         // Then
         assertEquals(1L, deleteResult, "1개 행이 삭제되어야 함");
@@ -294,7 +294,7 @@ class CourseServiceTest {
 
         // 4. DELETE
         System.out.println("4️⃣  DELETE - 강좌 삭제");
-        Long deleteResult = courseService.courseDeleteByCourseId(updatedCourse);
+        Long deleteResult = courseService.courseDeleteByCourseId(savedId.intValue());
         assertEquals(1L, deleteResult);
 
         // 삭제 확인
