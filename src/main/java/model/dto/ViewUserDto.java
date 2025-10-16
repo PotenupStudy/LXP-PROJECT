@@ -40,4 +40,10 @@ public class ViewUserDto {
         );
     }
 
+    @Override
+    public String toString() {
+        return "email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", role=" + role;
+    }
 }

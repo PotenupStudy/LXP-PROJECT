@@ -73,7 +73,7 @@ public class Main {
                         System.out.println(e.getMessage());
                     }
                 }
-                case 2 -> {
+                case 2 -> {     // 로그인
                     if(SignInUtil.isSignIn) {
                         System.out.println("이미 로그인 되어 있습니다.");
                         continue;
@@ -85,7 +85,7 @@ public class Main {
                         System.out.println("로그인 성공");
                     }
                 }
-                case 3 -> {
+                case 3 -> {     // 로그아웃
                     if(!SignInUtil.isSignIn) {
                         System.out.println("로그인 되지 않았습니다.");
                         continue;
@@ -94,7 +94,9 @@ public class Main {
                     SignInUtil.isSignIn = false;
                     SignInUtil.userId = 0;
                 }
-                case 4 -> System.out.println("회원 정보 조회");
+                case 4 -> {     // 회원 정보 조회
+                    System.out.println(userController.viewUser());
+                }
                 case 5 -> System.out.println("회원 정보 수정");
                 case 6 -> System.out.println("회원 탈퇴");
                 case 7 -> {

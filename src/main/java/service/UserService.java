@@ -35,6 +35,11 @@ public class UserService {
         }
     }
 
+    /**
+     * 로그인
+     * @param email 사용자 이메일
+     * @return 성공 여부
+     */
     public boolean signInUser(String email) {
         if(SignInUtil.isSignIn) {
             return false;
@@ -50,6 +55,21 @@ public class UserService {
             SignInUtil.userId = foundUser.getUserId();
 
             return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 회원 정보 조회
+     * @param userId 유저 ID
+     * @return
+     */
+    public ViewUserDto viewUser(long userId) {
+        try {
+            User foundUser = userDao.findUser(userId);
+            return ViewUserDto.from(foundUser);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);

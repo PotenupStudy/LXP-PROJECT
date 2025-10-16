@@ -3,13 +3,11 @@ package dao;
 import model.Role;
 import model.User;
 import model.dto.RegisterUserDto;
-import model.dto.ViewUserDto;
 import util.QueryUtil;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 /**
  * User와 관련된 데이터베이스 작업
@@ -57,6 +55,12 @@ public class UserDao {
         throw new SQLException("강좌 생성에 실패했습니다.");
     }
 
+    /**
+     * 이메일로 사용자 찾기
+     * @param email 사용자 이메일
+     * @return 해당하는 User
+     * @throws SQLException
+     */
     public User findUserByEmail(String email) throws SQLException {
         String sql = QueryUtil.getQuery("user.findByEmail");
 
@@ -80,6 +84,39 @@ public class UserDao {
                 );
 
                 return foundUser;
+            }
+
+            return null;
+        }
+    }
+
+    /**
+     * user id에 해당하는 사용자 찾기
+     * @param userId 사용자 ID
+     * @return 해당하는 User
+     * @throws SQLException
+     */
+    public User findUser(long userId) throws SQLException {
+        String sql = QueryUtil.getQuery("user.find");
+
+        // 회원 정보 찾기 데이터베이스 처리
+        try(PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setLong(1, userId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+                return new User(
+                        rs.getLong("user_id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        Role.findByString(rs.getString("role")),
+                        LocalDateTime.parse(rs.getString("insert_date"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                        LocalDateTime.parse(rs.getString("modify_date"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                        rs.getString("delete_date") != null?
+                                LocalDateTime.parse(rs.getString("delete_date"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                                : null
+                );
             }
 
             return null;

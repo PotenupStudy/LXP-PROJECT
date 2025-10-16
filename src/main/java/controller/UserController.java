@@ -24,7 +24,7 @@ public class UserController {
     }
 
     /**
-     * 회원 등록
+     * 회원 등록 요청
      * @param registerUserDto 회원 등록에 관한 정보 DTO
      */
     public long registerUser(RegisterUserDto registerUserDto) {
@@ -46,8 +46,20 @@ public class UserController {
         return userService.registerUser(registerUserDto);
     }
 
+    /**
+     * 회원 로그인 요청
+     * @param email 사용자 이메일
+     * @return 로그인 성공 여부
+     */
     public boolean signInUser(String email) {
         return userService.signInUser(email);
     }
 
+    /**
+     * 회원 정보 조회 요청
+     * @return 요청 대상 회원의 정보
+     */
+    public ViewUserDto viewUser() {
+        return userService.viewUser(SignInUtil.userId);
+    }
 }
