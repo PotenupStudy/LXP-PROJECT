@@ -1,12 +1,19 @@
 package com.lxp;
 
 import com.lxp.config.JDBCConnection;
+import com.lxp.controller.CategoryController;
 import com.lxp.controller.UserController;
+import com.lxp.model.Category;
+import com.lxp.service.CategoryService;
+import com.lxp.util.CategoryFactory;
+import com.lxp.util.InputUtil;
+import com.lxp.util.Validator;
 import com.lxp.model.dto.RegisterUserDto;
 import com.lxp.util.SignInUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Application {
@@ -15,7 +22,7 @@ public class Application {
             Connection conn = JDBCConnection.getConnection();
 
             Scanner sc = new Scanner(System.in);
-            while(true) {
+            while (true) {
                 System.out.println("===================================");
                 System.out.println("==           강의 시스템           ==");
                 System.out.println("===================================");
@@ -29,7 +36,7 @@ public class Application {
                 System.out.println("===================================");
 
                 int num = sc.nextInt();
-                switch(num) {
+                switch (num) {
                     case 1 -> runUserFeature(conn);
                     case 2 -> runCategoryFeature(conn);
                     case 3 -> runCourseFeature(conn);
@@ -52,13 +59,14 @@ public class Application {
 
     /**
      * 사용자 관련 업무
+     *
      * @param conn
      */
     public static void runUserFeature(Connection conn) {
         UserController userController = new UserController(conn);
         Scanner sc = new Scanner(System.in);
 
-        while(true) {
+        while (true) {
             System.out.println();
             System.out.println("===================================");
             System.out.println("==   [강의 시스템] - 회원 관련 업무  ==");
@@ -74,7 +82,7 @@ public class Application {
             int cmd = sc.nextInt();
             sc.nextLine();
 
-            switch(cmd) {
+            switch (cmd) {
                 case 1 -> { // 회원 가입
                     RegisterUserDto registerUserDto;
 
@@ -163,42 +171,64 @@ public class Application {
 
     /**
      * 카테고리 관련 업무
+     *
      * @param conn
      */
-    public static void runCategoryFeature(Connection conn) {
+    public static void runCategoryFeature(Connection conn) throws SQLException {
         //TODO 필요한거 있으면 넣기(Controller, Service 선언 등)
         Scanner sc = new Scanner(System.in);
+        CategoryFactory cf = new CategoryFactory();
 
-        while(true) {
+        CategoryService categoryService = cf.categoryService(conn);
+        CategoryController categoryController = new CategoryController(categoryService);
+        while (true) {
             System.out.println();
             System.out.println("===================================");
             System.out.println("== [강의 시스템] - 카테고리 관련 업무 ==");
             System.out.println("===================================");
             System.out.println("== 1. 카테고리 전체 조회            ==");
-            System.out.println("== 2. 카테고리 추가                ==");
-            System.out.println("== 3. 카테고리 삭제                ==");
-            System.out.println("== 4. 카테고리 수정                ==");
-            System.out.println("== 5. 카테고리 인덱스 번호로 선택    ==");
+            System.out.println("== 2. 카테고리 인덱스 번호로 선택   ==");
+            System.out.println("== 3. 카테고리 추가                 ==");
+            System.out.println("== 4. 카테고리 수정                 ==");
+            System.out.println("== 5. 카테고리 삭제                 ==");
             System.out.println("== 6. 이전으로 돌아가기             ==");
             System.out.println("===================================");
-            int cmd = sc.nextInt();
-            sc.nextLine();
+            int cmd = InputUtil.readValidInt("번호를 선택해주세요");
 
             switch (cmd) {
                 case 1 -> { // 카테고리 전체 조회
+                    List<Category> categories = categoryController.getAllCategories();
+                    if (categories.isEmpty()) {
+                        System.out.println("처음으로 돌아갑니다.");
+                    }
 
                 }
-                case 2 -> { // 카테고리 추가
+                case 2 -> { // 카테고리 인덱스 번호로 선택
 
+                    Category category = categoryController.getCategoryByIndex();
+
+                    System.out.println("선택한 카테고리 정보 : ");
+                    System.out.println("===========================================");
+                    System.out.println(category.toString());
                 }
-                case 3 -> { // 카테고리 삭제
-
+                case 3 -> { // 카테고리 추가
+                    String categoryName = InputUtil.readString("추가할 카테고리 이름을 입력하세요: ");
+                    System.out.println("===========================================");
+                    categoryController.createCategory(categoryName);
                 }
                 case 4 -> { // 카테고리 수정
-
+                    System.out.println("수정할 카테고리를 선택해 주세요.");
+                    System.out.println("===========================================");
+                    categoryController.updateCategory();
+                    System.out.println("-------------------변경후------------------");
+                    categoryController.getAllCategories();
                 }
-                case 5 -> { // 카테고리 인덱스 번호로 선택
-
+                case 5 -> { // 카테고리 삭제
+                    System.out.println("삭제할 카테고리를 선택해 주세요.");
+                    System.out.println("===========================================");
+                    categoryController.deleteCategory();
+                    System.out.println("-------------------변경후------------------");
+                    categoryController.getAllCategories();
                 }
                 case 6 -> { // 이전으로 돌아가기
                     return;
@@ -212,13 +242,14 @@ public class Application {
 
     /**
      * 강좌 관련 업무
+     *
      * @param conn
      */
     public static void runCourseFeature(Connection conn) {
         //TODO 필요한거 있으면 넣기(Controller, Service 선언 등)
         Scanner sc = new Scanner(System.in);
 
-        while(true) {
+        while (true) {
             System.out.println();
             System.out.println("===================================");
             System.out.println("==  [강의 시스템] - 강좌 관련 업무   ==");
@@ -257,13 +288,14 @@ public class Application {
 
     /**
      * 섹션 관련 업무
+     *
      * @param conn
      */
     public static void runSectionFeature(Connection conn) {
         //TODO 필요한거 있으면 넣기(Controller, Service 선언 등)
         Scanner sc = new Scanner(System.in);
 
-        while(true) {
+        while (true) {
             System.out.println();
             System.out.println("===================================");
             System.out.println("==  [강의 시스템] - 섹션 관련 업무   ==");
@@ -306,13 +338,14 @@ public class Application {
 
     /**
      * 강의 관련 업무
+     *
      * @param conn
      */
     public static void runLectureFeature(Connection conn) {
         //TODO 필요한거 있으면 넣기(Controller, Service 선언 등)
         Scanner sc = new Scanner(System.in);
 
-        while(true) {
+        while (true) {
             System.out.println();
             System.out.println("===================================");
             System.out.println("==  [강의 시스템] - 강의 관련 업무   ==");
@@ -355,13 +388,14 @@ public class Application {
 
     /**
      * 강의 리소스 관련 업무
+     *
      * @param conn
      */
     public static void runLectureResourceFeature(Connection conn) {
         //TODO 필요한거 있으면 넣기(Controller, Service 선언 등)
         Scanner sc = new Scanner(System.in);
 
-        while(true) {
+        while (true) {
             System.out.println();
             System.out.println("===================================");
             System.out.println("== [강의 시스템] - 강의 리소스 업무  ==");
