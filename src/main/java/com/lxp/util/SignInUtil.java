@@ -2,6 +2,8 @@ package com.lxp.util;
 
 import com.lxp.model.Role;
 
+import java.util.Objects;
+
 /**
  * 로그인 여부, 유저 상태를 체크하는 클래스
  * - 로그인 여부 -> isSignIn으로 체크
@@ -58,6 +60,16 @@ public class SignInUtil {
             throw new IllegalArgumentException("이름을 입력해 주세요.");
         } else if(name.length() > 100) {
             throw new IllegalArgumentException("이름은 100자를 넘을 수 없습니다.");
+        }
+    }
+
+    /**
+     * 현재 로그인한 사용자가 강사(INSTRUCTOR) 권한을 가지고 있는지 확인합니다.
+     * 권한이 없으면 RuntimeException을 발생시킵니다.
+     */
+    public static void validateInstructor() {
+        if (role == null || !Objects.equals(role.getValue(), Role.INSTRUCTOR.getValue())) {
+            throw new RuntimeException("해당 기능은 강사만 사용할 수 있습니다."); // 메시지를 좀 더 범용적으로 바꿔도 좋습니다.
         }
     }
 }

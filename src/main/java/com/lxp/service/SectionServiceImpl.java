@@ -2,11 +2,14 @@ package com.lxp.service;
 
 import com.lxp.dao.CourseDao;
 import com.lxp.dao.SectionDao;
+import com.lxp.model.Role;
 import com.lxp.model.Section;
 import com.lxp.model.dto.ViewSectionDto;
+import com.lxp.util.SignInUtil;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Objects;
 
 public class SectionServiceImpl implements SectionService {
     private final SectionDao sectionDao;
@@ -24,6 +27,9 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public void saveSection(Long courseId, String title, Integer orderNum) {
+        // 사용자가 강사 역할인지 확인
+        SignInUtil.validateInstructor();
+
         // 강좌가 존재하는 강좌인지 확인하는 로직
         if (!courseDao.existById(courseId)) {
             throw new RuntimeException("존재 하지 않는 강좌입니다.");
@@ -65,6 +71,9 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public void updateSection(Long sectionId, String newTitle, Integer newOrderNum) {
+        // 사용자가 강사 역할인지 확인
+        SignInUtil.validateInstructor();
+
         Section existingSection = sectionDao.findSectionById(sectionId);
 
         if (existingSection == null) {
@@ -83,6 +92,9 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public void deleteSection(Long sectionId) {
+        // 사용자가 강사 역할인지 확인
+        SignInUtil.validateInstructor();
+
         boolean exists = sectionDao.existsBySectionId(sectionId);
 
         if (!exists) {
