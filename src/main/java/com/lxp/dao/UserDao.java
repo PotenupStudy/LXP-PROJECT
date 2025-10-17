@@ -28,12 +28,6 @@ public class UserDao {
      */
     public long addUser(RegisterUserDto registerUserDto) throws SQLException, IllegalArgumentException {
         String sql = QueryUtil.getQuery("user.save");
-        String findSql = QueryUtil.getQuery("user.findByEmail");
-
-        // 이메일 중복 체크
-        if(findUserByEmail(registerUserDto.getEmail()) != null) {
-            throw new IllegalArgumentException("중복 된 이메일 입니다");
-        }
 
         // 회원가입 데이터베이스 처리
         try(PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -52,7 +46,7 @@ public class UserDao {
             }
         }
 
-        throw new SQLException("강좌 생성에 실패했습니다.");
+        throw new SQLException("회원 생성에 실패했습니다.");
     }
 
     /**
@@ -64,7 +58,7 @@ public class UserDao {
     public User findUserByEmail(String email) throws SQLException {
         String sql = QueryUtil.getQuery("user.findByEmail");
 
-        // 이메일 중복 체크
+        // 이메일 기반 회원 검색 데이터베이스 처리
         try(PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, email);
 
@@ -84,9 +78,11 @@ public class UserDao {
                 );
 
                 return foundUser;
+            } else {
+                throw new RuntimeException("일치하는 회원이 존재하지 않습니다.");
             }
-
-            return null;
+        } catch(SQLException ex) {
+            throw new SQLException("회원 검색에 실패했습니다.");
         }
     }
 
@@ -99,7 +95,7 @@ public class UserDao {
     public User findUser(long userId) throws SQLException {
         String sql = QueryUtil.getQuery("user.find");
 
-        // 회원 정보 찾기 데이터베이스 처리
+        // ID 기반 회원 정보 찾기 데이터베이스 처리
         try(PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setLong(1, userId);
 
@@ -118,9 +114,9 @@ public class UserDao {
                                 : null
                 );
             }
-
-            return null;
         }
+
+        throw new SQLException("회원 검색에 실패했습니다.");
     }
 
     /**
@@ -140,9 +136,11 @@ public class UserDao {
             pstmt.setLong(2, userId);
 
             rowsAffected = pstmt.executeUpdate();
-        }
 
-        return rowsAffected;
+            return rowsAffected;
+        } catch(SQLException ex) {
+            throw new SQLException("회원 정보 업데이트에 실패했습니다.");
+        }
     }
 
     /**
@@ -161,8 +159,35 @@ public class UserDao {
             pstmt.setLong(2, userId);
 
             rowsAffected = pstmt.executeUpdate();
-        }
 
-        return rowsAffected;
+            return rowsAffected;
+        } catch(SQLException ex) {
+            throw new SQLException("회원 탈퇴에 실패했습니다.");
+        }
+    }
+
+    /**
+     * 삭제 된 유저인지 체크
+     * @param email 검색 대상 이메일
+     * @return 삭제 된 유저 유무
+     * @throws SQLException
+     */
+    public boolean isDeletedUser(String email) throws SQLException {
+        String sql = QueryUtil.getQuery("user.findByEmail");
+
+        try(PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, email);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            // delete_date가 존재하면 삭제 된 유저
+            if(rs.next() && rs.getString("delete_date") != null) {
+                return true;
+            }
+
+            return false;
+        } catch(SQLException ex) {
+            throw new SQLException("유저 삭제 유무 체크에 실패했습니다.");
+        }
     }
 }
