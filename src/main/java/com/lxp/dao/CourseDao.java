@@ -62,6 +62,38 @@ public class CourseDao {
         return courses;
     }
 
+    public List<Course> findByCategoryId(Long categoryId){
+        List<Course> courses = new ArrayList<>();
+        String sql = QueryUtil.getQuery("course.findByCategoryId");
+
+        try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setLong(1, categoryId);
+
+            ResultSet result = pstmt.executeQuery();
+
+            while (result.next()){
+                Course course = new Course(
+                        result.getInt("course_id"),
+                        result.getInt("user_id"),
+                        result.getInt("category_id"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        result.getBigDecimal("price"),
+                        CourseLevel.from(result.getString("course_level"))
+                );
+
+                courses.add(course);
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("[error][ " + "CourseDao" + "." + "findByCategoryId" + "] "
+                    + e.getMessage());
+        }
+
+        return courses;
+    }
+
     public long save(Course course) {
         String sql = QueryUtil.getQuery("course.save");
         int result = 0;
@@ -114,7 +146,24 @@ public class CourseDao {
         return (long) rowsAffected;
     }
 
-    public Long delete(int courseId) {
+    public Long softDelete(Long courseId) {
+        String query = QueryUtil.getQuery("course.softDelete");
+
+        int rowsAffected = 0;
+
+        try(PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            pstmt.setLong(2, courseId);
+            rowsAffected = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("[error][ " + "CourseDao" + "." + "update" + "] "
+                    + e.getMessage());
+        }
+
+        return (long) rowsAffected;
+    }
+
+    public Long delete(Long courseId) {
         String query = QueryUtil.getQuery("course.delete");
 
         int rowsAffected = 0;

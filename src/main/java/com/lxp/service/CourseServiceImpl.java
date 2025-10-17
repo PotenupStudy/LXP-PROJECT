@@ -17,7 +17,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Boolean courseExists(long courseId) {
+    public Boolean courseExists(Long courseId) {
         return courseDao.existById(courseId);
     }
 
@@ -25,6 +25,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> courseFindAll(){
         return courseDao.findAll();
+    }
+
+    @Override
+    public List<Course> courseFindByCategoryId(Long categoryId) {
+        return courseDao.findByCategoryId(categoryId);
     }
 
     // 과정 등록
@@ -61,8 +66,30 @@ public class CourseServiceImpl implements CourseService {
         return result;
     }
 
+
     @Override
-    public Long courseDeleteByCourseId(int course_id) {
+    public Long softDeleteCourseByCourseId(Long course_id) {
+        Long result = null;
+        try{
+            if(course_id < 0)
+                throw new IllegalArgumentException("삭제");
+            result = courseDao.softDelete(course_id);
+
+            if(result < 0){
+                System.out.println("log : 강좌삭제 실패");
+                return null;
+            }
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("log : error");
+        }
+
+        return result;
+    }
+
+    @Override
+    public Long courseDeleteByCourseId(Long course_id) {
         Long result = null;
         try{
             if(course_id < 0)
