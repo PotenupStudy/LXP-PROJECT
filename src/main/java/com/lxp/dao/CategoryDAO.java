@@ -1,17 +1,16 @@
 package com.lxp.dao;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import com.lxp.utill.Logging;
+import com.lxp.util.Logging;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import com.lxp.model.Category;
-import com.lxp.utill.QueryUtil;
+import com.lxp.util.QueryUtil;
 
 
 public class CategoryDAO {

@@ -1,4 +1,4 @@
-package com.lxp.utill;
+package com.lxp.util;
 
 public class Validator {
 

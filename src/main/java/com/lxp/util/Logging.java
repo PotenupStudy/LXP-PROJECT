@@ -1,4 +1,4 @@
-package com.lxp.utill;
+package com.lxp.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
