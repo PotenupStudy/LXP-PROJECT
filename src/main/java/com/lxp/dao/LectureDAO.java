@@ -29,11 +29,12 @@ public class LectureDAO {
 
             while (rs.next()) {
                 long lectureId = rs.getLong("lecture_id");
+                long sectionId = rs.getLong("section_id");
                 String title = rs.getString("title");
                 int lectureOrder = rs.getInt("lecture_order");
                 String description = rs.getString("description");
 
-                Lecture lecture = new Lecture(lectureId, userInputSectionId, title, description, lectureOrder);
+                Lecture lecture = new Lecture(lectureId, sectionId, title, description, lectureOrder);
                 list.add(lecture);
             }
             return list;
@@ -116,6 +117,7 @@ public class LectureDAO {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
+                    long lectureId = rs.getLong("lecture_id");
                     long resourceId = rs.getLong("resource_id");
                     String resourceName = rs.getString("resource_name");
                     String typeStr = rs.getString("resource_type");
@@ -124,7 +126,7 @@ public class LectureDAO {
                     int orderIndex = rs.getInt("order_index");
                     int duration = rs.getInt("duration");
 
-                    LectureResource resource = new LectureResource(resourceId, resourceName, type, resourceUrl, orderIndex, duration);
+                    LectureResource resource = new LectureResource(resourceId, lectureId, resourceName, type, resourceUrl, orderIndex, duration);
 
                     list.add(resource);
                 }

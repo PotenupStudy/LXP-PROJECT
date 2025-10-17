@@ -25,12 +25,22 @@ public class Lecture {
         this.description = description;
     }
 
-    public Lecture(Long section_id, Long lecture_id, String title, String description, int lecture_order) {
+    // 조회 생성자
+    public Lecture(Long lecture_id, Long section_id, String title, String description, int lecture_order) {
         this.lecture_id = lecture_id;
         this.section_id = section_id;
         this.title = title;
         this.lecture_order = lecture_order;
         this.description = description;
+    }
+
+    // 수정 생성자
+    public Lecture(String description, int lecture_order, String title, Long section_id, Long lecture_id) {
+        this.description = description;
+        this.lecture_order = lecture_order;
+        this.title = title;
+        this.section_id = section_id;
+        this.lecture_id = lecture_id;
     }
 
     public Long getLecture_id() {

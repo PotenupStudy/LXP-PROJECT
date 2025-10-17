@@ -13,6 +13,16 @@ public class LectureResource {
     private LocalDateTime insert_date;
     private LocalDateTime modify_date;
 
+    public LectureResource(long resource_id, long lecture_id, String resource_name, ResourceType resource_type, String resource_url, int order_index, int duration) {
+        this.resource_id = resource_id;
+        this.lecture_id = lecture_id;
+        this.resource_name = resource_name;
+        this.resource_type = resource_type;
+        this.resource_url = resource_url;
+        this.order_index = order_index;
+        this.duration = duration;
+    }
+
     public LectureResource(long resource_id, long lecture_id, String resource_name, String resource_url, int order_index, int duration) {
         this.resource_id = resource_id;
         this.lecture_id = lecture_id;
@@ -49,7 +59,6 @@ public class LectureResource {
         this.resource_url = resource_url;
         this.order_index = order_index;
         this.duration = duration;
-        this.modify_date = modify_date;
     }
     public long getResource_id() {
         return resource_id;

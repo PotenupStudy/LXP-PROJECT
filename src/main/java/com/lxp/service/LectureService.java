@@ -38,7 +38,7 @@ public class LectureService {
     public long createLecture(Lecture lecture) throws Exception {
         try {
             long result = lectureDAO.create(lecture);
-            if (result < 0) {
+            if (result <= 0) {
                 System.out.println("강의 등록 실패");
                 return 0;
             } else {
@@ -52,7 +52,7 @@ public class LectureService {
     public long updateLecture(Lecture lecture) throws Exception {
         try {
             long result = lectureDAO.update(lecture);
-            if (result < 0) {
+            if (result <= 0) {
                 System.out.println("유효한 ID를 입력해주세요.");
                 return 0;
             } else  {
@@ -65,7 +65,7 @@ public class LectureService {
     public long deleteLecture(Lecture lecture) throws Exception {
         try {
             long result = lectureDAO.delete(lecture);
-            if (result < 0) {
+            if (result <= 0) {
                 System.out.println("강의 삭제 실패");
                 return 0;
             } else {
@@ -93,7 +93,7 @@ public class LectureService {
     public long createResource(LectureResource resource) throws Exception {
         try {
             long result = lectureDAO.createLr(resource);
-            if (result < 0) {
+            if (result <= 0) {
                 return 0;
             }
             return result;
@@ -106,7 +106,7 @@ public class LectureService {
     public long updateResource(LectureResource resource) throws Exception {
         try {
             long result = lectureDAO.updateLr(resource);
-            if (result < 0) {
+            if (result <= 0) {
                 return 0;
             }
             return result;
@@ -118,7 +118,7 @@ public class LectureService {
     public long deleteResource(LectureResource resource) throws Exception {
         try {
             long result = lectureDAO.deleteLr(resource);
-            if (result < 0) {
+            if (result <= 0) {
                 System.out.println("0 이상의 값을 입력해라");
                 return 0;
             }
