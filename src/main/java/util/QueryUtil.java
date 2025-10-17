@@ -27,10 +27,10 @@ public class QueryUtil {
     private static void loadQueries() {
         try {
             // 쿼리 xml 로드
-            InputStream inputStream = QueryUtil.class.getClassLoader().getResourceAsStream("queries.xml");
+            InputStream inputStream = QueryUtil.class.getClassLoader().getResourceAsStream("user_queries.xml");
 
             if(inputStream == null) {
-                throw new RuntimeException("queries.xml not found");
+                throw new RuntimeException("user_queries.xml not found");
             }
 
             // XML Document 관련 builder 생성

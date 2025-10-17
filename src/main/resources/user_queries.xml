@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <properties>
+    <!-- ID 기반 사용자 조회 -->
     <query key="user.find">
         SELECT *
         FROM USER
         WHERE user_id=?
     </query>
+    <!-- 이메일 기반 사용자 조회-->
     <query key="user.findByEmail">
         SELECT *
         FROM USER
         WHERE email=?
     </query>
+    <!-- 사용자 저장 -->
     <query key="user.save">
         INSERT INTO USER (name, email, role)
         VALUES(?, ?, ?)
     </query>
+    <!-- 사용자 업데이트 -->
     <query key="user.update">
         UPDATE user SET
         name=?
         WHERE user_id=?
     </query>
+    <!-- 사용자 삭제(Soft Delete) -->
     <query key="user.softDelete">
         UPDATE user SET
         delete_date=?
