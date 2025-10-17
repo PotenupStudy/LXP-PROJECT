@@ -10,12 +10,11 @@ build/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
+logs/
 *.iws
 *.iml
 *.ipr
 *.properties
-Main.java
-queries.xml
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/

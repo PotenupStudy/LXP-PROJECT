@@ -53,4 +53,3 @@ public class QueryUtil {
         return queries.get(key);
     }
 }
-
