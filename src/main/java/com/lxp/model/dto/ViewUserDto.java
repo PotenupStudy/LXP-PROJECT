@@ -1,7 +1,7 @@
-package model.dto;
+package com.lxp.model.dto;
 
-import model.Role;
-import model.User;
+import com.lxp.model.Role;
+import com.lxp.model.User;
 
 public class ViewUserDto {
 
@@ -29,7 +29,7 @@ public class ViewUserDto {
 
     /**
      * User -> ViewUserDto 변환
-     * @param user 유저 model
+     * @param user 유저 com.lxp.model
      * @return ViewUserDto
      */
     public static ViewUserDto from(User user) {

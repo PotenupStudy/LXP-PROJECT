@@ -1,9 +1,9 @@
-package controller;
+package com.lxp.controller;
 
-import model.dto.RegisterUserDto;
-import model.dto.ViewUserDto;
-import service.UserService;
-import util.SignInUtil;
+import com.lxp.model.dto.RegisterUserDto;
+import com.lxp.model.dto.ViewUserDto;
+import com.lxp.service.UserService;
+import com.lxp.util.SignInUtil;
 
 import java.sql.Connection;
 

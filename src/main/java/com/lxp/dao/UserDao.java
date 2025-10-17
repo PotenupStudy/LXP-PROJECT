@@ -1,9 +1,9 @@
-package dao;
+package com.lxp.dao;
 
-import model.Role;
-import model.User;
-import model.dto.RegisterUserDto;
-import util.QueryUtil;
+import com.lxp.model.Role;
+import com.lxp.model.User;
+import com.lxp.model.dto.RegisterUserDto;
+import com.lxp.util.QueryUtil;
 
 import java.sql.*;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package config;
+package com.lxp.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * resources -> config.properties
+ * resources -> com.lxp.config.properties
  * 외부 파일로 분리하는 것은 우리가 자바의 소스코드에 리터럴 값으로
  * DB 액세스 정보를 저장하는 경우 외부에서 우리의 DB 정보를 확인할 수 있는 문제가 발생한다.
  * 이를 방지하기 위해 우리는 외부 파일로 접근 정보를 분리하고 해당 파일을 참고하는 방식으로 작성하게 되며

@@ -1,4 +1,4 @@
-package util;
+package com.lxp.util;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

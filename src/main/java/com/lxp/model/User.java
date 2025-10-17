@@ -1,4 +1,4 @@
-package model;
+package com.lxp.model;
 
 import java.time.LocalDateTime;
 

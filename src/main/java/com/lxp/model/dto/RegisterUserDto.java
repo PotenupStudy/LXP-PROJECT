@@ -1,6 +1,6 @@
-package model.dto;
+package com.lxp.model.dto;
 
-import model.Role;
+import com.lxp.model.Role;
 
 public class RegisterUserDto {
 
