@@ -8,6 +8,9 @@ import com.lxp.service.CategoryService;
 import com.lxp.util.CategoryFactory;
 import com.lxp.util.InputUtil;
 import com.lxp.util.Validator;
+import com.lxp.model.dto.RegisterUserDto;
+import com.lxp.util.SignInUtil;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -48,12 +51,6 @@ public class Application {
                         continue;
                     }
                 }
-
-                if (num == 1) {
-                    runUserFeature(conn);
-                } else {
-                    break;
-                }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage() + "\n" + e.getStackTrace()[0]);
@@ -87,22 +84,80 @@ public class Application {
 
             switch (cmd) {
                 case 1 -> { // 회원 가입
+                    RegisterUserDto registerUserDto;
 
+                    System.out.print("이름을 입력하세요 : ");
+                    String name = sc.nextLine();
+                    System.out.print("이메일을 입력하세요 : ");
+                    String email = sc.nextLine();
+                    System.out.print("역할을 입력하세요(1. 학생, 2. 교사) : ");
+                    String inputRole = sc.nextLine();
+                    registerUserDto = new RegisterUserDto(name, email, inputRole);
+                    try {
+                        long registeredId = userController.registerUser(registerUserDto);
+                        System.out.println("Log[INFO] - 회원 등록 완료. 입력 값: " + registerUserDto);
+                        System.out.println("회원 가입이 완료되었습니다. 가입된 번호 : " + registeredId);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Log[ERROR] - " + e.getMessage() + " / " + registerUserDto);
+                        System.out.println(e.getMessage());
+                    }
                 }
                 case 2 -> { // 로그인
+                    if(SignInUtil.isSignIn) {
+                        System.out.println("이미 로그인 되어 있습니다.");
+                        continue;
+                    }
+                    System.out.print("이메일을 입력하세요 : ");
+                    String email = sc.nextLine();
 
+                    try {
+                        if (userController.signInUser(email)) {
+                            System.out.println("로그인 성공");
+                        }
+                    } catch (RuntimeException e) {
+                        System.out.println(e.getMessage());
+                    }
                 }
                 case 3 -> { // 로그아웃
+                    if(!SignInUtil.isSignIn) {
+                        System.out.println("로그인 되지 않았습니다.");
+                        continue;
+                    }
 
+                    SignInUtil.signOut();
                 }
                 case 4 -> { // 회원 정보 조회
-
+                    if(!SignInUtil.isSignIn) {
+                        System.out.println("로그인 되지 않았습니다.");
+                        continue;
+                    }
+                    System.out.println(userController.viewUser(SignInUtil.userId));
                 }
                 case 5 -> { // 회원 정보 수정
-
+                    if(!SignInUtil.isSignIn) {
+                        System.out.println("로그인 되지 않았습니다.");
+                        continue;
+                    }
+                    System.out.print("변경 할 이름을 입력하세요 : ");
+                    String name = sc.nextLine();
+                    if(userController.editUserInfo(name, SignInUtil.userId) > 0) {
+                        System.out.println("변경 완료");
+                    }
                 }
                 case 6 -> { // 회원 탈퇴
+                    if(!SignInUtil.isSignIn) {
+                        System.out.println("로그인 되지 않았습니다.");
+                        continue;
+                    }
+                    System.out.print("정말 탈퇴하시겠습니까?(Y/N) : ");
+                    String yn = sc.nextLine().toLowerCase();
 
+                    if(!yn.equals("y")) continue;
+
+                    if(userController.withdrawalUser(SignInUtil.userId) > 0) {
+                        SignInUtil.signOut();
+                        System.out.println("회원 탈퇴 완료");
+                    }
                 }
                 case 7 -> {
                     return;
