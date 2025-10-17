@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<properties>
+    <query key="section.save">
+        INSERT INTO Section
+        (course_id, title, order_num)
+        VALUES
+        (?, ?, ?)
+    </query>
+
+    <query key="section.existByCourseIdAndOrderNum">
+        SELECT COUNT(*)
+        FROM Section
+        WHERE course_id = ? AND order_num = ?
+    </query>
+
+    <query key="section.existBySectionId">
+        SELECT COUNT(*)
+        FROM Section
+        WHERE section_id = ?;
+    </query>
+
+    <query key="section.update">
+        UPDATE Section
+        SET title = ?, order_num = ?
+        WHERE section_id = ?
+    </query>
+
+    <query key="section.delete">
+        DELETE FROM Section
+        WHERE section_id = ?
+    </query>
+
+    <query key="course.existById">
+        SELECT COUNT(*)
+        FROM Course
+        WHERE course_id = ?
+    </query>
+
+    <query key="section.findById">
+        SELECT
+        section_id,
+        course_id,
+        title,
+        order_num
+        FROM
+        Section
+        WHERE
+        section_id = ?
+    </query>
+
+    <query key="section.findByCourseId">
+        SELECT
+        section_id,
+        title,
+        order_num
+        FROM
+        Section
+        WHERE
+        course_id = ?
+        ORDER BY
+        order_num ASC
+    </query>
+</properties>
