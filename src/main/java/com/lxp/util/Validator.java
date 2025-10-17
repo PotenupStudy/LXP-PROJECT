@@ -25,4 +25,10 @@ public class Validator {
         }
 
     }
+    public static boolean stringValidator(String str) {
+        if(str.trim().isEmpty()){
+            return true;
+        }
+        return false;
+    }
 }
