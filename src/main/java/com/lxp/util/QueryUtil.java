@@ -2,6 +2,7 @@ package com.lxp.util;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,7 +18,8 @@ public class QueryUtil {
                 "category_queries.xml",
                 "course_queries.xml",
                 "user_queries.xml",
-                "section_queries.xml"
+                "section_queries.xml",
+                "lecture_queries.xml"
         );
 
         for (String xmlFile : xmlFiles) {
