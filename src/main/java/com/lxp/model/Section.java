@@ -61,7 +61,7 @@ public class Section {
     }
 
     /**
-     * 색션명 검증 (필수, 길이 100 이하)
+     * 섹션명 검증 (필수, 길이 100 이하)
      */
     private static void validateTitle(String title) {
         Objects.requireNonNull(title, "섹션 제목은 필수입니다.");

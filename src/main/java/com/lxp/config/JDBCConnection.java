@@ -42,7 +42,7 @@ public class JDBCConnection {
             dataSource.close();
     }
 
-    public static void printConnectionPooStatus() {
+    public static void printConnectionPoolStatus() {
         HikariPoolMXBean poolMXBean = dataSource.getHikariPoolMXBean();
         System.out.println("hikaricp 커넥션 풀 상태");
         System.out.println("총 커넥션 갯수 : " + poolMXBean.getTotalConnections());

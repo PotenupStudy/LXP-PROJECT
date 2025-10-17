@@ -9,7 +9,7 @@ import java.util.List;
 public class SectionServiceImpl implements SectionService {
     private final SectionDao sectionDao;
 
-    public SectionServiceImpl(Connection connection){
+    public SectionServiceImpl(Connection connection) {
         this.sectionDao = new SectionDao(connection);
     }
 
