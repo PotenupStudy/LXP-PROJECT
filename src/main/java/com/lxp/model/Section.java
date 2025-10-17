@@ -101,13 +101,13 @@ public class Section {
     @Override
     public String toString() {
         return """
-           Section {
-             sectionId  = %d,
-             courseId   = %d,
-             title      = '%s',
-             orderNum   = %d,
-             insertDate = %s,
-             modifyDate = %s
-           }""".formatted(sectionId, courseId, title, orderNum, insertDate, modifyDate);
+                Section {
+                  sectionId  = %d,
+                  courseId   = %d,
+                  title      = '%s',
+                  orderNum   = %d,
+                  insertDate = %s,
+                  modifyDate = %s
+                }""".formatted(sectionId, courseId, title, orderNum, insertDate, modifyDate);
     }
 }
