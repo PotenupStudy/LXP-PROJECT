@@ -34,7 +34,7 @@ public final class Category {
         return new Category(category_id, category_name, sort_order, insert_date, modify_date);
     }
 
-    public static Category forNewCreate(String categoryName) {
+    public static Category forNewCreate(String categoryName) throws IllegalArgumentException {
         categoryName = saveCategoryValidator(categoryName);
         return new Category(categoryName);
     }
@@ -130,10 +130,10 @@ public final class Category {
     @Override
     public String toString() {
         return "Category[" +
-                "category_id=" + category_id + ", " +
-                "category_name='" + category_name + '\'' + ", " +
-                "sort_order=" + sort_order + ", " +
-                "insert_date='" + insert_date + '\'' + ", " +
+                "category_id=" + category_id + " / " +
+                "category_name='" + category_name + '\'' + " / " +
+                "sort_order=" + sort_order + " / " +
+                "insert_date='" + insert_date + '\'' + " / " +
                 "modify_date='" + modify_date + '\'' +
                 ']';
     }

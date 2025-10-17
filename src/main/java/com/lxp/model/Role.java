@@ -1,9 +1,10 @@
 package com.lxp.model;
 
 public enum Role {
-    STUDENT("student"),
-    INSTRUCTOR("instructor"),
-    ANONYMOUS("anonymous");
+    STUDENT("student"),         // 학생
+    INSTRUCTOR("instructor"),   // 교사
+    ADMIN("admin"),             // 관리자
+    ANONYMOUS("anonymous");     // 잘못 입력된 경우를 대비한 값
 
     private String role;
 
