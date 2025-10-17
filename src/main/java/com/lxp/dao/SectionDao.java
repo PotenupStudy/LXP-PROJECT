@@ -1,6 +1,7 @@
 package com.lxp.dao;
 
 import com.lxp.model.Section;
+import com.lxp.util.QueryUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

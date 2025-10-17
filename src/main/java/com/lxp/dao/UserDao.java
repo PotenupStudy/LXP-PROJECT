@@ -3,6 +3,7 @@ package com.lxp.dao;
 import com.lxp.model.Role;
 import com.lxp.model.User;
 import com.lxp.model.dto.RegisterUserDto;
+import com.lxp.util.QueryUtil;
 
 import java.sql.*;
 import java.time.LocalDateTime;
