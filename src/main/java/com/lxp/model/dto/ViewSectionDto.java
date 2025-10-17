@@ -3,9 +3,9 @@ package com.lxp.model.dto;
 import com.lxp.model.Section;
 
 public class ViewSectionDto {
-    Long sectionId;
-    String title;
-    Integer orderNum;
+    private Long sectionId;
+    private String title;
+    private Integer orderNum;
 
     private ViewSectionDto(Long sectionId, String title, Integer orderNum) {
         this.sectionId = sectionId;

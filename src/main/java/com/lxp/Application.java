@@ -391,7 +391,7 @@ public class Application {
                             long id = Long.parseLong(sectionIdInput);
                             Validator.validatePositive(id);
                             sectionId = id;
-                        } catch (InputMismatchException e) {
+                        } catch (NumberFormatException e) {
                             System.out.println("입력 형식이 올바르지 않습니다. ID와 순서는 숫자로 입력해주세요.");
                             sc.nextLine();
                         } catch (IllegalArgumentException e) {
@@ -422,7 +422,7 @@ public class Application {
 
                             orderNum = num;
                             System.out.println();
-                        } catch (InputMismatchException e) {
+                        } catch (NumberFormatException e) {
                             System.out.println("입력 형식이 올바르지 않습니다. ID와 순서는 숫자로 입력해주세요.");
                             sc.nextLine();
                         } catch (IllegalArgumentException e) {
