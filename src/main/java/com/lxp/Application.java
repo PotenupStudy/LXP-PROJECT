@@ -1,4 +1,4 @@
-package com.lxp.app;
+package com.lxp;
 
 public class Application {
 }
