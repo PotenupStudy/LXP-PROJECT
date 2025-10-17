@@ -28,8 +28,8 @@ public class SectionDao {
             if (affectedRows == 0) {
                 throw new RuntimeException("섹션 생성에 실패했습니다");
             }
-
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException("DB 오류: 섹션 생성 실패", e);
         }
     }
