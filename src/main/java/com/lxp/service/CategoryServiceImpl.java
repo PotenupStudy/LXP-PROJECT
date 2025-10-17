@@ -1,11 +1,11 @@
 package com.lxp.service;
 
-import static com.lxp.utill.Validator.selectValidator;
+import static com.lxp.util.Validator.selectValidator;
 
 import com.lxp.dao.CategoryDAO;
 import com.lxp.model.Category;
-import com.lxp.utill.InputUtil;
-import com.lxp.utill.Logging;
+import com.lxp.util.InputUtil;
+import com.lxp.util.Logging;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
