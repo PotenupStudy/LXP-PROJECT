@@ -40,6 +40,7 @@ public final class Category {
     }
 
     public static Category forUpdate(Long category_id,String categoryName) {
+        categoryName = saveCategoryValidator(categoryName);
         return new Category(category_id, categoryName);
     }
 

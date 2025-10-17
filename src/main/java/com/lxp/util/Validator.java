@@ -60,4 +60,10 @@ public class Validator {
             throw new IllegalArgumentException("[입력 오류] 숫자는 0보다 커야 합니다.");
         }
     }
+    public static boolean stringValidator(String str) {
+        if(str.trim().isEmpty()){
+            return true;
+        }
+        return false;
+    }
 }

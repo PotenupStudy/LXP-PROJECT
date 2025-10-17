@@ -74,7 +74,7 @@ public class CategoryDAO {
                 throw new SQLException("삭제하려는 데이터가 존재하지 않습니다.");
             }
         }catch (SQLException e){
-            throw new RuntimeException("Error in deleting category");
+            throw new RuntimeException("삭제하려는 카테고리에 소속된 강좌가 존재합니다.");
         }
     }
 
