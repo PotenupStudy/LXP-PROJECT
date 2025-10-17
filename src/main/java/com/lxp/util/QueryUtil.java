@@ -19,10 +19,10 @@ public class QueryUtil {
 
     private static void loadQueries() {
         try {
-            InputStream inputStream = QueryUtil.class.getClassLoader().getResourceAsStream("queries.xml");
+            InputStream inputStream = QueryUtil.class.getClassLoader().getResourceAsStream("lecture_queries.xml");
 
             if (inputStream == null) {
-                throw new RuntimeException("queries.xml not found");
+                throw new RuntimeException("lecture_queries.xml not found");
             }
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

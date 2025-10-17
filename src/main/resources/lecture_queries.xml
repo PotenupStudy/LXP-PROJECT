@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<properties>
+    <query key = "lecture.findAll">
+        SELECT
+        lecture_id,
+        section_id,
+        title,
+        lecture_order,
+        description
+        FROM Lecture
+        WHERE section_id = ?
+    </query>
+
+    <query key = "lecture.create">
+        INSERT INTO
+        Lecture (section_id, title, description, lecture_order)
+        VALUES (?, ?, ?, ?)
+    </query>
+
+
+    <query key = "lecture.update">
+        UPDATE Lecture SET
+        title = ?,
+        description = ?,
+        lecture_order = ?
+        WHERE lecture_id = ? AND section_id = ?
+    </query>
+
+    <query key = "lecture.delete">
+        DELETE FROM Lecture
+        WHERE lecture_id = ?
+    </query>
+
+    <query key = "lr.findAll">
+        SELECT
+        resource_id,
+        lecture_id,
+        resource_name,
+        resource_type,
+        resource_url,
+        order_index,
+        duration
+        FROM LectureResource
+        WHERE lecture_id = ?
+    </query>
+
+    <query key = "lr.create">
+        INSERT INTO
+        LectureResource (lecture_id, resource_name, resource_type, resource_url, order_index, duration)
+        VALUES (?, ?, ?, ?, ?, ?)
+    </query>
+
+    <query key = "lr.update">
+        UPDATE LectureResource SET
+        resource_name = ?,
+        resource_type = ?,
+        resource_url = ?,
+        order_index = ?,
+        duration = ?
+        WHERE resource_id = ?
+    </query>
+
+    <query key = "lr.delete">
+        DELETE FROM LectureResource
+        WHERE resource_id = ?
+    </query>
+
+</properties>

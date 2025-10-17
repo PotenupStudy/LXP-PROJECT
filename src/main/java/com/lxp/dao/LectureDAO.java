@@ -132,8 +132,6 @@ public class LectureDAO {
                 }
             }
         } catch (IllegalArgumentException e) {
-            // Enum 매핑 실패 (fromDb에서 던짐) → 원인 파악에 도움
-            System.err.println("Enum 매핑 실패: " + e.getMessage());
             throw e;
         }
         return list;
@@ -183,11 +181,11 @@ public class LectureDAO {
         }
     }
 
-    public long deleteLr(LectureResource resource) throws SQLException {
+    public long deleteLr(long resourceId) throws SQLException {
         String sql = QueryUtil.getQuery("lr.delete");
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setLong(1, resource.getResource_id());
+            pstmt.setLong(1, resourceId);
 
             return pstmt.executeUpdate();
 

@@ -4,7 +4,6 @@ import com.lxp.dao.LectureDAO;
 import com.lxp.model.Lecture;
 import com.lxp.model.LectureResource;
 
-import javax.lang.model.type.ArrayType;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -63,29 +62,28 @@ public class LectureService {
         }
     }
     public long deleteLecture(Lecture lecture) throws Exception {
+        long result = 0;
         try {
-            long result = lectureDAO.delete(lecture);
-            if (result <= 0) {
-                System.out.println("강의 삭제 실패");
-                return 0;
-            } else {
+            result = lectureDAO.delete(lecture);
+            if (result > 0) {
                 return result;
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (RuntimeException e) {
+            System.out.println("강의 삭제 실패");
         }
+        return result;
     }
 
     public List<LectureResource> findAllResources(long userInputLectureId) throws Exception {
-        List<LectureResource> resources;
+        List<LectureResource> resources = new ArrayList<>();
         try {
             resources = lectureDAO.findAllLr(userInputLectureId);
             if(resources.isEmpty()) {
-                System.out.println("잘못된 Lecture ID 입니다.");
+                System.out.println("해당 Lecture ID에 등록된 강의 리소스가 존재하지 않습니다.");
             }
-        } catch (SQLException e) {
-            System.out.println("오류오류");
-            throw new RuntimeException(e);
+        } catch (IllegalArgumentException e) {
+            // Enum 매핑 실패 (fromDb에서 던짐) → 원인 파악에 도움
+            System.err.println("Enum 매핑 실패: " + e.getMessage());
         }
         return resources;
     }
@@ -103,26 +101,23 @@ public class LectureService {
         }
     }
 
-    public long updateResource(LectureResource resource) throws Exception {
+    public void updateResource(LectureResource resource) throws Exception {
         try {
             long result = lectureDAO.updateLr(resource);
             if (result <= 0) {
-                return 0;
+                System.out.println("");
             }
-            return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public long deleteResource(LectureResource resource) throws Exception {
+    public void deleteResource(long resourceId) throws Exception {
         try {
-            long result = lectureDAO.deleteLr(resource);
+            long result = lectureDAO.deleteLr(resourceId);
             if (result <= 0) {
-                System.out.println("0 이상의 값을 입력해라");
-                return 0;
+                System.out.println("리소스 삭제 중 오류가 발생했습니다. 삭제가 완료되지 않았습니다.");
             }
-            return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
