@@ -44,12 +44,6 @@ public class Application {
                         continue;
                     }
                 }
-
-                if(num == 1) {
-                    runUserFeature(conn);
-                } else {
-                    break;
-                }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage() + "\n" + e.getStackTrace()[0]);
