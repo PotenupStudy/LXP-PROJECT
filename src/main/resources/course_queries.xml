@@ -31,6 +31,19 @@
         WHERE category_id = ?
         AND  delete_date IS NULL ;
     </query>
+    <query key="course.findByCourseId">
+        SELECT
+            course_id,
+            user_id,
+            category_id,
+            title,
+            description,
+            price,
+            course_level
+        FROM Course
+        WHERE course_id = ?
+        AND  delete_date IS NULL ;
+    </query>
     <query key="course.save">
         INSERT INTO Course
         (

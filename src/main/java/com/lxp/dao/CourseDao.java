@@ -42,9 +42,9 @@ public class CourseDao {
 
             while (result.next()){
                 Course course = new Course(
-                        result.getInt("course_id"),
-                        result.getInt("user_id"),
-                        result.getInt("category_id"),
+                        result.getLong("course_id"),
+                        result.getLong("user_id"),
+                        result.getLong("category_id"),
                         result.getString("title"),
                         result.getString("description"),
                         result.getBigDecimal("price"),
@@ -73,9 +73,9 @@ public class CourseDao {
 
             while (result.next()){
                 Course course = new Course(
-                        result.getInt("course_id"),
-                        result.getInt("user_id"),
-                        result.getInt("category_id"),
+                        result.getLong("course_id"),
+                        result.getLong("user_id"),
+                        result.getLong("category_id"),
                         result.getString("title"),
                         result.getString("description"),
                         result.getBigDecimal("price"),
@@ -94,13 +94,43 @@ public class CourseDao {
         return courses;
     }
 
+    public Course findByCourseId(Long courseId){
+        Course course;
+        String sql = QueryUtil.getQuery("course.findByCourseId");
+
+        try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setLong(1, courseId);
+
+            ResultSet result = pstmt.executeQuery();
+
+            if (result.next()) {
+                course = new Course(
+                        result.getLong("course_id"),
+                        result.getLong("user_id"),
+                        result.getLong("category_id"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        result.getBigDecimal("price"),
+                        CourseLevel.from(result.getString("course_level"))
+                );
+                return course;
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("[error][ " + "CourseDao" + "." + "findByCourseId" + "] "
+                    + e.getMessage());
+        }
+    }
+
     public long save(Course course) {
         String sql = QueryUtil.getQuery("course.save");
         int result = 0;
 
         try(PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
-            pstmt.setInt(1, course.getUserId());
-            pstmt.setInt(2, course.getCategoryId());
+            pstmt.setLong(1, course.getUserId());
+            pstmt.setLong(2, course.getCategoryId());
             pstmt.setString(3, course.getTitle());
             pstmt.setString(4, course.getDescription());
             pstmt.setBigDecimal(5, course.getPrice());
@@ -111,7 +141,7 @@ public class CourseDao {
             if(result > 0)
                 try (ResultSet re = pstmt.getGeneratedKeys()){
                     if(re.next())
-                        return re.getInt(1);
+                        return re.getLong(1);
 
                 }
 
@@ -135,7 +165,7 @@ public class CourseDao {
             pstmt.setBigDecimal(4, updateCourse.getPrice());
             pstmt.setString(5, updateCourse.getCourseLevel().getValue());
             pstmt.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
-            pstmt.setInt(7, updateCourse.getCourseId());
+            pstmt.setLong(7, updateCourse.getCourseId());
 
             rowsAffected = pstmt.executeUpdate();
         } catch (SQLException e) {

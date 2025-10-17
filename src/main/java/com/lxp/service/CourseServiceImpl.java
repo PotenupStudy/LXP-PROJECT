@@ -32,6 +32,11 @@ public class CourseServiceImpl implements CourseService {
         return courseDao.findByCategoryId(categoryId);
     }
 
+    @Override
+    public Course findByCourseId(Long courseId) {
+        return courseDao.findByCourseId(courseId);
+    }
+
     // 과정 등록
     @Override
     public Long courseSave(Course course) {

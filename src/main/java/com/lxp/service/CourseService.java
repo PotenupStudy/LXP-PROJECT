@@ -11,6 +11,8 @@ public interface CourseService {
 
     List<Course> courseFindByCategoryId(Long categoryId);
 
+    Course findByCourseId(Long courseId);
+
     Long courseSave(Course course);
 
     Long courseUpdateByCourseId(Course course) ;
