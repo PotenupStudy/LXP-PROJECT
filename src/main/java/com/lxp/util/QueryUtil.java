@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class QueryUtil {
-    private static final Map<String, String> quries = new HashMap<>();
+    private static final Map<String, String> queries = new HashMap<>();
 
     static {
         loadQueries();
@@ -36,7 +36,7 @@ public class QueryUtil {
                 String key = queryElement.getAttribute("key");
                 String sql = queryElement.getTextContent().trim();
 
-                quries.put(key, sql);
+                queries.put(key, sql);
 
             }
         } catch (Exception e) {
@@ -45,6 +45,6 @@ public class QueryUtil {
     }
 
     public static String getQuery(String key) {
-        return quries.get(key);
+        return queries.get(key);
     }
 }
