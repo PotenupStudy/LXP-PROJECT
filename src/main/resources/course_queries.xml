@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<properties>
+    <query key="course.courseFindExistById">
+            SELECT
+                COUNT(course_id) AS row_count
+            FROM Course
+            WHERE course_id = ?;
+    </query>
+    <query key="course.findAll">
+        SELECT
+            course_id,
+            user_id,
+            category_id,
+            title,
+            description,
+            price,
+            course_level
+        FROM Course;
+    </query>
+    <query key="course.save">
+        INSERT INTO Course
+        (
+            user_id,
+            category_id,
+            title,
+            description,
+            price,
+            course_level,
+            insert_date
+        )
+        VALUES(?,?,?,?,?,?,now())
+    </query>
+    <query key="course.update">
+        UPDATE Course
+        SET
+            category_id = ?,
+            title = ?,
+            description = ?,
+            price = ?,
+            course_level = ?,
+            modify_date = ?
+        WHERE course_id= ? ;
+    </query>
+
+    <query key="course.delete">
+        DELETE FROM Course
+        WHERE course_id = ?;
+    </query>
+</properties>
