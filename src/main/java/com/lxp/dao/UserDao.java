@@ -78,9 +78,9 @@ public class UserDao {
                 );
 
                 return foundUser;
-            } else {
-                throw new RuntimeException("일치하는 회원이 존재하지 않습니다.");
             }
+
+            return null;
         } catch(SQLException ex) {
             throw new SQLException("회원 검색에 실패했습니다.");
         }
