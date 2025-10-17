@@ -15,7 +15,6 @@ logs/
 *.iml
 *.ipr
 *.properties
-/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
