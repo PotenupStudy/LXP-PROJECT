@@ -1,4 +1,4 @@
-package util;
+package com.lxp.util;
 
 public class SignInUtil {
 

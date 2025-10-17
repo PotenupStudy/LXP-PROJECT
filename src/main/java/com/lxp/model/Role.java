@@ -1,4 +1,4 @@
-package model;
+package com.lxp.model;
 
 public enum Role {
     STUDENT("student"),

@@ -1,10 +1,10 @@
-package service;
+package com.lxp.service;
 
-import dao.UserDao;
-import model.User;
-import model.dto.RegisterUserDto;
-import model.dto.ViewUserDto;
-import util.SignInUtil;
+import com.lxp.dao.UserDao;
+import com.lxp.model.User;
+import com.lxp.model.dto.RegisterUserDto;
+import com.lxp.model.dto.ViewUserDto;
+import com.lxp.util.SignInUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;

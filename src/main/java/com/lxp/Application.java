@@ -1,5 +1,7 @@
-import config.JDBCConnection;
-import controller.UserController;
+package com.lxp;
+
+import com.lxp.config.JDBCConnection;
+import com.lxp.controller.UserController;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -39,12 +41,6 @@ public class Application {
                         System.out.println("잘못된 입력 입니다.");
                         continue;
                     }
-                }
-
-                if(num == 1) {
-                    runUserFeature(conn);
-                } else {
-                    break;
                 }
             }
         } catch (SQLException e) {
