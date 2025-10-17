@@ -28,6 +28,16 @@ public class UserService {
      */
     public long registerUser(RegisterUserDto registerUserDto) {
         try {
+            // 탈퇴 된 회원 이메일 여부 체크
+            if(userDao.isDeletedUser(registerUserDto.getEmail())) {
+                throw new IllegalArgumentException("탈퇴 된 회원입니다.");
+            }
+
+            // 이메일 중복 체크
+            if(userDao.findUserByEmail(registerUserDto.getEmail()) != null) {
+                throw new IllegalArgumentException("중복 된 이메일 입니다");
+            }
+
             return userDao.addUser(registerUserDto);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -41,7 +51,7 @@ public class UserService {
      * @return 성공 여부
      */
     public boolean signInUser(String email) {
-        if(SignInUtil.isSignIn) {
+        if(SignInUtil.isSignIn) {      // 이미 로그인 상태
             return false;
         }
 
@@ -51,7 +61,7 @@ public class UserService {
                 throw new RuntimeException("사용자를 찾을 수 없습니다.");
             }
 
-            SignInUtil.signIn(foundUser.getUserId());
+            SignInUtil.signIn(foundUser.getUserId() ,foundUser.getRole());
 
             return true;
         } catch (SQLException e) {
@@ -63,7 +73,7 @@ public class UserService {
     /**
      * 회원 정보 조회
      * @param userId 유저 ID
-     * @return
+     * @return 회원 정보를 담은 DTO
      */
     public ViewUserDto viewUser(long userId) {
         try {
