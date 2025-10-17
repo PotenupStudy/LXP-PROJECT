@@ -2,14 +2,13 @@ package com.lxp.service;
 
 import com.lxp.dao.CourseDao;
 import com.lxp.dao.SectionDao;
-import com.lxp.model.Role;
+import com.lxp.model.Course;
 import com.lxp.model.Section;
 import com.lxp.model.dto.ViewSectionDto;
 import com.lxp.util.SignInUtil;
 
 import java.sql.Connection;
 import java.util.List;
-import java.util.Objects;
 
 public class SectionServiceImpl implements SectionService {
     private final SectionDao sectionDao;
@@ -75,9 +74,15 @@ public class SectionServiceImpl implements SectionService {
         SignInUtil.validateInstructor();
 
         Section existingSection = sectionDao.findSectionById(sectionId);
-
         if (existingSection == null) {
             throw new RuntimeException("해당 ID의 섹션을 찾을 수 없습니다.");
+        }
+
+        // 본인이 등록한 섹션인지 확인
+        Long courseId = existingSection.getCourseId();
+        Course course = courseDao.findByCourseId(courseId);
+        if (course.getUserId() != SignInUtil.userId) {
+            throw new RuntimeException("해당 섹션을 수정할 권한이 없습니다.");
         }
 
         if (!existingSection.getOrderNum().equals(newOrderNum)) {
@@ -95,10 +100,16 @@ public class SectionServiceImpl implements SectionService {
         // 사용자가 강사 역할인지 확인
         SignInUtil.validateInstructor();
 
-        boolean exists = sectionDao.existsBySectionId(sectionId);
-
-        if (!exists) {
+        Section existingSection = sectionDao.findSectionById(sectionId);
+        if (existingSection == null) {
             throw new RuntimeException("해당 ID의 섹션을 찾을 수 없습니다.");
+        }
+
+        // 본인이 등록한 섹션인지 확인
+        Long courseId = existingSection.getCourseId();
+        Course course = courseDao.findByCourseId(courseId);
+        if (course.getUserId() != SignInUtil.userId) {
+            throw new RuntimeException("해당 섹션을 삭제할 권한이 없습니다.");
         }
 
         sectionDao.deleteSection(sectionId);
