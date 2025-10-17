@@ -66,4 +66,7 @@ public class Validator {
         }
         return false;
     }
+    public static boolean compareString(String str1, String str2) {
+        return !str1.trim().equalsIgnoreCase(str2.trim());
+    }
 }

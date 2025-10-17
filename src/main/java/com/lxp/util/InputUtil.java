@@ -10,10 +10,19 @@ public final class InputUtil {
 
     public static String readString(String prompt) {
         System.out.printf("▶ %s\n",prompt);
-        return scanner.nextLine();
+        return readString();
     }
     public static String readString() {
-        return scanner.nextLine();
+        String str;
+        boolean b;
+        do {
+            str = scanner.nextLine();
+            b = str.trim().isEmpty();
+            if(!b){
+                return str;
+            }
+        }while(b);
+        return str;
     }
     public static int readValidInt(String prompt) {
         while(true){
