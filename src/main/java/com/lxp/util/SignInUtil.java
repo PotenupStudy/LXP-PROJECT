@@ -18,9 +18,10 @@ public class SignInUtil {
      * 로그인
      * @param id 로그인 대상 사용자 ID
      */
-    public static void signIn(long id, Role role) {
+    public static void signIn(long id, Role r) {
         isSignIn = true;
         userId = id;
+        role = r;
     }
 
     /**
