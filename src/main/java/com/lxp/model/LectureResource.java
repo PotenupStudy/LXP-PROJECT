@@ -52,13 +52,14 @@ public class LectureResource {
         this.order_index = order_index;
         this.duration = duration;
     }
-    public LectureResource(String resource_name, ResourceType resource_type, String resource_url, int order_index, int duration, long resource_id) {
+    public LectureResource(String resource_name, ResourceType resource_type, String resource_url, int order_index, int duration, long resource_id, long lecture_id) {
         this.resource_id = resource_id;
         this.resource_name = resource_name;
         this.resource_type = resource_type;
         this.resource_url = resource_url;
         this.order_index = order_index;
         this.duration = duration;
+        this.lecture_id = lecture_id;
     }
     public long getResource_id() {
         return resource_id;

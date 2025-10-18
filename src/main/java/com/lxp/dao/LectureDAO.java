@@ -193,4 +193,30 @@ public class LectureDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean existBySectionIdAndOrderNum(Long sectionId, Integer orderNum) throws SQLException {
+        String sql = QueryUtil.getQuery("lecture.existBySectionIdAndOrderNum");
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setLong(1, sectionId);
+            ps.setInt(2, orderNum);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            throw new SQLException("DB 오류: Lecture 존재 여부 확인 실패", e);
+        }
+    }
+
+    public boolean existByLectureIdAndOrderNumInResource(Long lectureId, Integer orderNum) throws SQLException {
+        String sql = QueryUtil.getQuery("lr.existByLectureIdAndOrderNum");
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setLong(1, lectureId);
+            ps.setInt(2, orderNum);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            throw new SQLException("DB 오류: LectureResource 존재 여부 확인 실패", e);
+        }
+    }
 }
