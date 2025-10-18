@@ -601,7 +601,8 @@ public class Application {
                         } catch (IllegalArgumentException e) {
                             System.out.println(e.getMessage());
                         } catch (RuntimeException e) {
-                            System.out.println("삭제 실패: " + e.getMessage());
+                            System.out.println();
+                            System.out.println("[삭제 실패] " + e.getMessage());
                             break;
                         }
                     }
