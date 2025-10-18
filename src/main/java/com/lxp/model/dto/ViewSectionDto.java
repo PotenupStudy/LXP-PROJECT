@@ -17,6 +17,7 @@ public class ViewSectionDto {
         if (section == null) {
             return null;
         }
+
         return new ViewSectionDto(
                 section.getSectionId(),
                 section.getTitle(),

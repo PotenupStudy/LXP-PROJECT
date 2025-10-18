@@ -9,6 +9,7 @@ import com.lxp.util.SignInUtil;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Objects;
 
 public class SectionServiceImpl implements SectionService {
     private final SectionDao sectionDao;
@@ -81,9 +82,7 @@ public class SectionServiceImpl implements SectionService {
         // 본인이 등록한 섹션인지 확인
         Long courseId = existingSection.getCourseId();
         Course course = courseDao.findByCourseId(courseId);
-        if (course.getUserId() != SignInUtil.userId) {
-            throw new RuntimeException("해당 섹션을 수정할 권한이 없습니다.");
-        }
+        assertSectionOwner(course);
 
         if (!existingSection.getOrderNum().equals(newOrderNum)) {
             if (sectionDao.existsByCourseIdAndOrderNum(existingSection.getCourseId(), newOrderNum)) {
@@ -108,10 +107,14 @@ public class SectionServiceImpl implements SectionService {
         // 본인이 등록한 섹션인지 확인
         Long courseId = existingSection.getCourseId();
         Course course = courseDao.findByCourseId(courseId);
-        if (course.getUserId() != SignInUtil.userId) {
-            throw new RuntimeException("해당 섹션을 삭제할 권한이 없습니다.");
-        }
+        assertSectionOwner(course);
 
         sectionDao.deleteSection(sectionId);
+    }
+
+    private void assertSectionOwner(Course course) {
+        if (!Objects.equals(course.getUserId(), SignInUtil.userId)) {
+            throw new RuntimeException("해당 섹션을 삭제할 권한이 없습니다.");
+        }
     }
 }
