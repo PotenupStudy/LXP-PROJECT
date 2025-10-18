@@ -2,19 +2,6 @@ package com.lxp.util;
 
 public class Validator {
 
-    public static int selectValidator(int listSize) {
-        while (true) {
-            int choice = InputUtil.readValidInt("번호를 선택해 주세요.");
-
-            if (choice >= 1 && choice <= listSize) {
-                return choice;
-            } else {
-                System.err.printf("⚠️ 오류: 1부터 %d 사이의 번호를 입력해주세요.\n", listSize);
-                System.err.println("==================================================================");
-            }
-        }
-    }
-
     public static boolean selectValidator(int choice, int listSize) {
         if (choice >= 1 && choice <= listSize) {
             return false;
@@ -33,7 +20,7 @@ public class Validator {
      */
     public static void validateNonBlank(String input) {
         if (input == null || input.isBlank()) {
-            throw new IllegalArgumentException("[입력 오류] 값은 비어있을 수 없습니다.");
+            throw new IllegalArgumentException("⚠️ 오류: 빈 값은 입력될수 없습니다.");
         }
     }
 
@@ -45,7 +32,7 @@ public class Validator {
      */
     public static void validatePositive(long number) {
         if (number <= 0) {
-            throw new IllegalArgumentException("[입력 오류] ID는 0보다 커야 합니다.");
+            throw new IllegalArgumentException("⚠️ 오류: ID는 0보다 커야 합니다.");
         }
     }
 
@@ -57,7 +44,13 @@ public class Validator {
      */
     public static void validatePositive(int number) {
         if (number <= 0) {
-            throw new IllegalArgumentException("[입력 오류] 숫자는 0보다 커야 합니다.");
+            throw new IllegalArgumentException("⚠️ 오류: 숫자는 0보다 커야 합니다.");
         }
+    }
+    public static boolean compareStringToIgnoreCase(String str1, String str2) {
+        if (str1 == null || str2 == null) {
+            return str1 != str2;
+        }
+        return !str1.trim().equalsIgnoreCase(str2.trim());
     }
 }

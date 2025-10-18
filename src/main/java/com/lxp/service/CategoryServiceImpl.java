@@ -8,11 +8,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryDAO categoryDAO;
-    private final Scanner sc = new Scanner(System.in);
 
     //테스트용 생성자
     public CategoryServiceImpl(CategoryDAO categoryDAO) {
@@ -26,7 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getAllCategories() throws SQLException, RuntimeException {
-        List<Category> categories = new ArrayList<>();
+        List<Category> categories;
         try {
             categories = categoryDAO.getAllCategory();
             if (categories.isEmpty()) {
@@ -49,7 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
         boolean check;
 
         do {
-            select = InputUtil.readValidInt();
+            select = InputUtil.readValidInt("번호를 선택해 주세요.");
             check = Validator.selectValidator(select, categorySize);
         } while (check);
 
@@ -77,20 +75,18 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void updateCategoryName() throws SQLException, IllegalArgumentException {
         Category tmp = selectCategory();
-
         boolean isUpdateSuccessful = false;
         do {
             String updateCategoryName = InputUtil.readString("변경할 이름을 입력해주세요");
-
-            Category updatedCategory = Category.forUpdate(tmp.getCategory_id(), updateCategoryName);
             try {
+                Category updatedCategory = Category.forUpdate(tmp.getCategory_id(), updateCategoryName);
                 categoryDAO.updateCategoryName(updatedCategory);
                 System.out.printf("[%s]의 이름이 [%s]로 변경되었습니다.\n", tmp.getCategory_name(),
                         updatedCategory.getCategory_name());
 
                 isUpdateSuccessful = true;
             } catch (IllegalArgumentException | SQLException e) {
-                System.out.println(e.getMessage());
+                System.err.println("⚠️ 오류: " + e.getMessage());
             }
         } while (!isUpdateSuccessful);
 

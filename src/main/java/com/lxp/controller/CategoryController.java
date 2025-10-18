@@ -6,12 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-//카테고리 전체 조회 -> List<Category> getAllCategories()
-//카테고리 추가 -> void saveCategory()
-//카테고리삭제 -> void deleteCategory()
-//수정 -> void updateCategoryName()
-//5. 불러온 카테고리중 인덱스 번호로 선택 -> Category selectCategory()
-
 public class CategoryController {
     private final CategoryService categoryService;
 
@@ -25,7 +19,7 @@ public class CategoryController {
             categories = categoryService.getAllCategories();
 
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            System.err.println("⚠️ 오류: " + e.getMessage());
         }
         return categories;
     }
@@ -34,31 +28,21 @@ public class CategoryController {
         try{
             category = categoryService.selectCategory();
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            System.err.println("⚠️ 오류: " + e.getMessage());
         }
         return category;
     }
-    public void createCategory(String categoryName){
-        try{
-            categoryService.saveCategory(categoryName);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-
+    public void createCategory(String categoryName) throws IllegalArgumentException,SQLException {
+        categoryService.saveCategory(categoryName);
     }
     public void deleteCategory() throws RuntimeException, SQLException {
         try{
             categoryService.deleteCategory();
         }catch(Exception e){
-            System.out.println(e.getMessage());
+            System.err.println("⚠️ 오류: " + e.getMessage());
         }
     }
     public void updateCategory() throws RuntimeException, SQLException {
-        try{
-            categoryService.updateCategoryName();
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-
+        categoryService.updateCategoryName();
     }
 }
