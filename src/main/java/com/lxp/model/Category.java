@@ -35,16 +35,16 @@ public final class Category {
     }
 
     public static Category forNewCreate(String categoryName) throws IllegalArgumentException {
-        categoryName = saveCategoryValidator(categoryName);
+        categoryName = categoryValidator(categoryName);
         return new Category(categoryName);
     }
 
     public static Category forUpdate(Long category_id,String categoryName) {
-        categoryName = saveCategoryValidator(categoryName);
+        categoryName = categoryValidator(categoryName);
         return new Category(category_id, categoryName);
     }
 
-    private static String saveCategoryValidator(String categoryName) {
+    private static String categoryValidator(String categoryName) {
         if (categoryName == null || categoryName.isBlank()) {
             throw new IllegalArgumentException("이름은 공백일 수 없습니다.");
         }
@@ -52,18 +52,13 @@ public final class Category {
         if (trimmedName.length() < MIN_NAME_LENGTH || trimmedName.length() > MAX_NAME_LENGTH) {
             throw new IllegalArgumentException(String.format("이름은 %d자 이상 %d자 이하 여야 합니다.", MIN_NAME_LENGTH, MAX_NAME_LENGTH));
         }
-        if (!trimmedName.matches("^[가-힣a-zA-Z0-9\\s]+$")) {
-            throw new IllegalArgumentException("이름에는 특수문자를 사용할 수 없습니다.");
+        if (!trimmedName.matches("^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9\\s/]+$")) {
+            throw new IllegalArgumentException("이름에는 /를 제외한 특수문자를 사용할 수 없습니다.");
+        }
+        if(trimmedName.matches("^[ㄱ-ㅎ]+$")){
+            throw new IllegalArgumentException("이름에는 완성된 한글 글자만 입력할 수 있습니다");
         }
         return trimmedName;
-    }
-
-    public void updateCategoryValidator(Category category) {
-
-    }
-
-    public void validateSortOrder() {
-
     }
 
     public Long getCategory_id() {

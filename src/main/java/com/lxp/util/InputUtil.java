@@ -13,17 +13,17 @@ public final class InputUtil {
         return readString();
     }
     public static String readString() {
-        String str;
-        boolean b;
-        do {
-            str = scanner.nextLine();
-            b = str.trim().isEmpty();
-            if(!b){
+        while (true) {
+            try {
+                String str = scanner.nextLine();
+                Validator.validateNonBlank(str);
                 return str;
+            } catch (IllegalArgumentException e) {
+                System.err.println(e.getMessage());
             }
-        }while(b);
-        return str;
+        }
     }
+
     public static int readValidInt(String prompt) {
         while(true){
             try{
@@ -41,7 +41,6 @@ public final class InputUtil {
                 return Integer.parseInt(input);
             }catch(NumberFormatException e){
                 System.err.println("⚠️ 오류: 숫자로만 입력해야 합니다.\n");
-                continue;
             }
         }
     }
