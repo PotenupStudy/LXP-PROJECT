@@ -1,19 +1,27 @@
 package com.lxp.service;
 
+import com.lxp.config.TransactionManager;
 import com.lxp.dao.CourseDao;
 import com.lxp.model.Course;
+import com.lxp.model.Lecture;
+import com.lxp.model.dto.ViewSectionDto;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourseServiceImpl implements CourseService {
 
     private final CourseDao courseDao;
     private final Connection connection;
+    SectionService sectionService;
+    LectureService lectureService;
 
     public CourseServiceImpl(Connection connection){
         this.connection = connection;
         this.courseDao = new CourseDao(connection);
+        this.sectionService = new SectionServiceImpl(connection);
+        this.lectureService = new LectureService(connection);
     }
 
     @Override
@@ -71,8 +79,6 @@ public class CourseServiceImpl implements CourseService {
         return result;
     }
 
-
-    @Override
     public Long softDeleteCourseByCourseId(Long course_id) {
         Long result = null;
         try{
@@ -91,6 +97,44 @@ public class CourseServiceImpl implements CourseService {
         }
 
         return result;
+    }
+
+
+    @Override
+    public Long softDeleteByCourseId(Long course_id) {
+        return new TransactionManager().execute(connection -> {
+            Long deleteId = null;
+            try{
+                List<ViewSectionDto> sectionList = sectionService.findSectionsByCourseId(course_id);
+                List<Lecture> lectureList = new ArrayList<>();
+                sectionList.forEach(section -> {
+                    sectionService.deleteSection(section.getSectionId());
+
+                    try {
+                        lectureList.addAll(lectureService.findAllLectures(section.getSectionId()));
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+
+                });
+
+                lectureList.forEach(lecture -> {
+                    try {
+                        lectureService.deleteLecture(lecture);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+
+                return softDeleteCourseByCourseId(course_id);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("log : error");
+            }
+            return deleteId;
+        });
     }
 
     @Override

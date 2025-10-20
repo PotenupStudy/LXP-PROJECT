@@ -19,5 +19,7 @@ public interface CourseService {
 
     Long softDeleteCourseByCourseId(Long course_id);
 
+    Long softDeleteByCourseId(Long course_id);
+
     Long courseDeleteByCourseId(Long course_id) ;
 }

@@ -74,8 +74,8 @@ class CourseServiceTest {
 
         // Given
         Course newCourse = Course.createCourse(
-                1,
-                1,
+                1L,
+                1L,
                 "테스트 강좌",
                 "테스트용 강좌입니다",
                 BigDecimal.valueOf(10000),
@@ -144,7 +144,7 @@ class CourseServiceTest {
         // Given - 삭제할 강좌 먼저 생성
         System.out.println("1️⃣  삭제할 강좌 생성 중...");
         Course newCourse = Course.createCourse(
-                1, 1,
+                1L, 1L,
                 "테스트 삭제용 강좌",
                 "삭제 테스트용 강좌입니다",
                 BigDecimal.valueOf(5000),
@@ -194,7 +194,7 @@ class CourseServiceTest {
         // Given - 수정할 강좌 먼저 생성
         System.out.println("1️⃣  수정할 강좌 생성 중...");
         Course newCourse = Course.createCourse(
-                1, 1,
+                1L, 1L,
                 "테스트 수정용 강좌",
                 "수정 테스트용 강좌입니다",
                 BigDecimal.valueOf(10000),
@@ -258,7 +258,7 @@ class CourseServiceTest {
         // Given - 삭제할 강좌 먼저 생성
         System.out.println("1️⃣  삭제할 강좌 생성 중...");
         Course newCourse = Course.createCourse(
-                1, 1,
+                1L, 1L,
                 "테스트 삭제용 강좌",
                 "삭제 테스트용 강좌입니다",
                 BigDecimal.valueOf(5000),
@@ -323,7 +323,7 @@ class CourseServiceTest {
         // 1. CREATE
         System.out.println("1️⃣  CREATE - 강좌 생성");
         Course newCourse = Course.createCourse(
-                1, 1, "플로우 테스트 강좌", "CRUD 플로우 테스트용",
+                1L, 1L, "플로우 테스트 강좌", "CRUD 플로우 테스트용",
                 BigDecimal.valueOf(30000), CourseLevel.INTERMEDIATE
         );
         Long savedId = courseService.courseSave(newCourse);
