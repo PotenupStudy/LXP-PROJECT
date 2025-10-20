@@ -25,6 +25,18 @@ public class ViewSectionDto {
         );
     }
 
+    public Long getSectionId() {
+        return sectionId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Integer getOrderNum() {
+        return orderNum;
+    }
+
     @Override
     public String toString() {
         return "ViewSectionDto{" +
