@@ -1,15 +1,15 @@
 package com.lxp.service;
 
-import com.lxp.model.Section;
+import com.lxp.model.dto.ViewSectionDto;
 
 import java.util.List;
 
 public interface SectionService {
     Boolean existsSection(Long sectionId);
 
-    Section findSectionById(Long sectionId);
+    ViewSectionDto findSectionById(Long sectionId);
 
-    List<Section> findSectionsByCourseId(Long courseId);
+    List<ViewSectionDto> findSectionsByCourseId(Long courseId);
 
     void saveSection(Long courseId, String title, Integer orderNum);
 

@@ -15,7 +15,34 @@
             description,
             price,
             course_level
-        FROM Course;
+        FROM Course
+        WHERE delete_date IS NULL ;
+    </query>
+    <query key="course.findByCategoryId">
+        SELECT
+            course_id,
+            user_id,
+            category_id,
+            title,
+            description,
+            price,
+            course_level
+        FROM Course
+        WHERE category_id = ?
+        AND  delete_date IS NULL ;
+    </query>
+    <query key="course.findByCourseId">
+        SELECT
+            course_id,
+            user_id,
+            category_id,
+            title,
+            description,
+            price,
+            course_level
+        FROM Course
+        WHERE course_id = ?
+        AND  delete_date IS NULL ;
     </query>
     <query key="course.save">
         INSERT INTO Course
@@ -39,6 +66,12 @@
             price = ?,
             course_level = ?,
             modify_date = ?
+        WHERE course_id= ? ;
+    </query>
+    <query key="course.softDelete">
+        UPDATE Course
+        SET
+            delete_date = ?
         WHERE course_id= ? ;
     </query>
 
