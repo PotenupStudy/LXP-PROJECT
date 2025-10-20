@@ -2,11 +2,14 @@ package com.lxp.service;
 
 import com.lxp.dao.CourseDao;
 import com.lxp.dao.SectionDao;
+import com.lxp.model.Course;
 import com.lxp.model.Section;
 import com.lxp.model.dto.ViewSectionDto;
+import com.lxp.util.SignInUtil;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Objects;
 
 public class SectionServiceImpl implements SectionService {
     private final SectionDao sectionDao;
@@ -24,6 +27,9 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public void saveSection(Long courseId, String title, Integer orderNum) {
+        // 사용자가 강사 역할인지 확인
+        SignInUtil.validateInstructor();
+
         // 강좌가 존재하는 강좌인지 확인하는 로직
         if (!courseDao.existById(courseId)) {
             throw new RuntimeException("존재 하지 않는 강좌입니다.");
@@ -65,11 +71,23 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public void updateSection(Long sectionId, String newTitle, Integer newOrderNum) {
-        Section existingSection = sectionDao.findSectionById(sectionId);
+        // 사용자가 강사 역할인지 확인
+        SignInUtil.validateInstructor();
 
+        Section existingSection = sectionDao.findSectionById(sectionId);
         if (existingSection == null) {
             throw new RuntimeException("해당 ID의 섹션을 찾을 수 없습니다.");
         }
+
+        // 본인이 등록한 섹션인지 확인
+        Long courseId = existingSection.getCourseId();
+        Course course = courseDao.findByCourseId(courseId);
+
+        if (course == null) {
+            throw new RuntimeException("ID가 " + courseId + "인 강좌를 찾을 수 없습니다.");
+        }
+
+        assertSectionOwner(course);
 
         if (!existingSection.getOrderNum().equals(newOrderNum)) {
             if (sectionDao.existsByCourseIdAndOrderNum(existingSection.getCourseId(), newOrderNum)) {
@@ -83,12 +101,30 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public void deleteSection(Long sectionId) {
-        boolean exists = sectionDao.existsBySectionId(sectionId);
+        // 사용자가 강사 역할인지 확인
+        SignInUtil.validateInstructor();
 
-        if (!exists) {
+        Section existingSection = sectionDao.findSectionById(sectionId);
+        if (existingSection == null) {
             throw new RuntimeException("해당 ID의 섹션을 찾을 수 없습니다.");
         }
 
+        // 본인이 등록한 섹션인지 확인
+        Long courseId = existingSection.getCourseId();
+        Course course = courseDao.findByCourseId(courseId);
+
+        if (course == null) {
+            throw new RuntimeException("ID가 " + courseId + "인 강좌를 찾을 수 없습니다.");
+        }
+
+        assertSectionOwner(course);
+
         sectionDao.deleteSection(sectionId);
+    }
+
+    private void assertSectionOwner(Course course) {
+        if (!Objects.equals(course.getUserId(), SignInUtil.userId)) {
+            throw new RuntimeException("해당 섹션을 삭제할 권한이 없습니다.");
+        }
     }
 }

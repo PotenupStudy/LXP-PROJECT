@@ -39,7 +39,6 @@ public class UserController {
     public boolean signInUser(String email) {
         // 입력 값 검증(이메일)
         SignInUtil.validateEmail(email);
-
         return userService.signInUser(email);
     }
 
