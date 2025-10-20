@@ -17,11 +17,24 @@ public class ViewSectionDto {
         if (section == null) {
             return null;
         }
+
         return new ViewSectionDto(
                 section.getSectionId(),
                 section.getTitle(),
                 section.getOrderNum()
         );
+    }
+
+    public Long getSectionId() {
+        return sectionId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Integer getOrderNum() {
+        return orderNum;
     }
 
     @Override
