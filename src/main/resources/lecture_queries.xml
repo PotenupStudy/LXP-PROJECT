@@ -11,6 +11,16 @@
         FROM Lecture
         WHERE section_id = ?
     </query>
+    <query key = "lecture.find">
+        SELECT
+        lecture_id,
+        section_id,
+        title,
+        lecture_order,
+        description
+        FROM Lecture
+        WHERE lecture_id = ?
+    </query>
 
     <query key = "lecture.create">
         INSERT INTO
@@ -30,6 +40,11 @@
     <query key = "lecture.delete">
         DELETE FROM Lecture
         WHERE lecture_id = ?
+    </query>
+
+    <query key = "lecture.deleteAll">
+        DELETE FROM Lecture
+        WHERE section_id = ?
     </query>
 
     <query key = "lr.findAll">
