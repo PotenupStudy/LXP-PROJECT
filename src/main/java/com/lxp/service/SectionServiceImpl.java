@@ -1,16 +1,20 @@
 package com.lxp.service;
 
+import com.lxp.dao.CourseDao;
 import com.lxp.dao.SectionDao;
 import com.lxp.model.Section;
+import com.lxp.model.dto.ViewSectionDto;
 
 import java.sql.Connection;
 import java.util.List;
 
 public class SectionServiceImpl implements SectionService {
     private final SectionDao sectionDao;
+    private final CourseDao courseDao;
 
     public SectionServiceImpl(Connection connection) {
         this.sectionDao = new SectionDao(connection);
+        this.courseDao = new CourseDao(connection);
     }
 
     @Override
@@ -21,6 +25,9 @@ public class SectionServiceImpl implements SectionService {
     @Override
     public void saveSection(Long courseId, String title, Integer orderNum) {
         // 강좌가 존재하는 강좌인지 확인하는 로직
+        if (!courseDao.existById(courseId)) {
+            throw new RuntimeException("존재 하지 않는 강좌입니다.");
+        }
 
         // 해당 강좌에 섹션 번호가 이미 존재하는지 확인하는 로직
         if (sectionDao.existsByCourseIdAndOrderNum(courseId, orderNum)) {
@@ -32,13 +39,28 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
-    public Section findSectionById(Long sectionId) {
-        return sectionDao.findSectionById(sectionId);
+    public ViewSectionDto findSectionById(Long sectionId) {
+        Section section = sectionDao.findSectionById(sectionId);
+
+        if (section == null) {
+            throw new RuntimeException("해당 ID의 섹션을 찾을 수 없습니다.");
+        }
+
+        return ViewSectionDto.from(section);
     }
 
     @Override
-    public List<Section> findSectionsByCourseId(Long courseId) {
-        return sectionDao.findSectionsByCourseId(courseId);
+    public List<ViewSectionDto> findSectionsByCourseId(Long courseId) {
+        // 강좌가 존재하는 강좌인지 확인하는 로직
+        if (!courseDao.existById(courseId)) {
+            throw new RuntimeException("ID가 " + courseId + "인 강좌를 찾을 수 없습니다.");
+        }
+
+        List<Section> sectionsByCourseId = sectionDao.findSectionsByCourseId(courseId);
+
+        return sectionsByCourseId.stream()
+                .map(ViewSectionDto::from)
+                .toList();
     }
 
     @Override

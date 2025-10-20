@@ -12,14 +12,27 @@ public final class InputUtil {
         System.out.printf("▶ %s\n",prompt);
         return scanner.nextLine();
     }
-
+    public static String readString() {
+        return scanner.nextLine();
+    }
     public static int readValidInt(String prompt) {
-        String input = readString(prompt);
         while(true){
             try{
+                String input = readString(prompt);
                 return Integer.parseInt(input);
             }catch(NumberFormatException e){
                 System.err.println("⚠️ 오류: 숫자로만 입력해야 합니다.\n");
+            }
+        }
+    }
+    public static int readValidInt() {
+        while(true){
+            try{
+                String input = readString();
+                return Integer.parseInt(input);
+            }catch(NumberFormatException e){
+                System.err.println("⚠️ 오류: 숫자로만 입력해야 합니다.\n");
+                continue;
             }
         }
     }

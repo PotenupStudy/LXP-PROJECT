@@ -118,6 +118,70 @@ class CourseServiceTest {
         System.out.println("=== READ 테스트 완료 ===\n");
     }
 
+    @Test
+    void courseFindByCategoryId() {
+        System.out.println("=== READ 테스트 시작 ===");
+
+        // When
+        Long categoryId = 2L;
+        List<Course> courses = courseService.courseFindByCategoryId(categoryId);
+
+        // Then
+        assertNotNull(courses, "조회 결과는 null이면 안됨");
+        assertTrue(courses.size() >= 0, "조회 결과는 0개 이상이어야 함");
+
+        System.out.println("📋 " + categoryId + "카테고리 하위 강좌 수: " + courses.size());
+
+        courses.forEach(item -> System.out.println(item.toString()));
+
+        System.out.println("=== READ 테스트 완료 ===\n");
+    }
+
+    @Test
+    void softDeleteCourseByCourseId() {
+        System.out.println("=== SOFT DELETE 테스트 시작 ===");
+
+        // Given - 삭제할 강좌 먼저 생성
+        System.out.println("1️⃣  삭제할 강좌 생성 중...");
+        Course newCourse = Course.createCourse(
+                1, 1,
+                "테스트 삭제용 강좌",
+                "삭제 테스트용 강좌입니다",
+                BigDecimal.valueOf(5000),
+                CourseLevel.BEGINNER
+        );
+        Long savedId = courseService.courseSave(newCourse);
+        assertNotNull(savedId, "강좌 생성 실패");
+        System.out.println("   ✅ 강좌 생성 완료: ID=" + savedId);
+
+        // 생성한 강좌 조회
+        System.out.println("2️⃣  생성한 강좌 조회 중...");
+        List<Course> courses = courseService.courseFindAll();
+        Course courseToDelete = courses.stream()
+                .filter(c -> c.getCourseId() == savedId.intValue())
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("생성한 강좌를 찾을 수 없습니다"));
+        System.out.println("   ✅ 강좌 조회 완료: " + courseToDelete.getTitle());
+
+        // When - 삭제
+        System.out.println("3️⃣  강좌 삭제 중...");
+        Long deleteResult = courseService.softDeleteCourseByCourseId((long) savedId.intValue());
+
+        // Then
+        assertEquals(1L, deleteResult, "1개 행이 삭제되어야 함");
+
+        // 삭제 확인
+        System.out.println("4️⃣  삭제 결과 확인 중...");
+        List<Course> afterDelete = courseService.courseFindAll();
+        boolean exists = afterDelete.stream()
+                .anyMatch(c -> c.getCourseId() == savedId.intValue());
+
+        assertFalse(exists, "삭제된 강좌는 조회되면 안됨");
+
+        System.out.println("🗑️  강좌 삭제 성공! ID: " + savedId);
+        System.out.println("=== DELETE 테스트 완료 ===\n");
+    }
+
     // ========================================
     // UPDATE 테스트
     // ========================================
@@ -215,7 +279,7 @@ class CourseServiceTest {
 
         // When - 삭제
         System.out.println("3️⃣  강좌 삭제 중...");
-        Long deleteResult = courseService.courseDeleteByCourseId(savedId.intValue());
+        Long deleteResult = courseService.courseDeleteByCourseId(savedId);
 
         // Then
         assertEquals(1L, deleteResult, "1개 행이 삭제되어야 함");
@@ -238,7 +302,7 @@ class CourseServiceTest {
         System.out.println("=== EXISTS CHECK 테스트 시작 ===");
 
         // When
-        Boolean result = courseService.courseExists(4);
+        Boolean result = courseService.courseExists(4L);
 
         // Then
         assertTrue(result, "course_id가 " + 4 + "인 로우 존재");
@@ -294,7 +358,7 @@ class CourseServiceTest {
 
         // 4. DELETE
         System.out.println("4️⃣  DELETE - 강좌 삭제");
-        Long deleteResult = courseService.courseDeleteByCourseId(savedId.intValue());
+        Long deleteResult = courseService.courseDeleteByCourseId(savedId);
         assertEquals(1L, deleteResult);
 
         // 삭제 확인

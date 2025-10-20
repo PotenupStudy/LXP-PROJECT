@@ -5,13 +5,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface CategoryService {
-    List<Category> getAllCategories() throws SQLException;
+    List<Category> getAllCategories() throws SQLException, RuntimeException;
 
-    Category selectCategory() throws SQLException;
+    Category selectCategory()throws SQLException, RuntimeException;
 
-    void saveCategory() throws SQLException;
+    void saveCategory(String categoryName) throws IllegalArgumentException, SQLException;
 
-    void deleteCategory() throws SQLException;
+    void deleteCategory() throws SQLException,RuntimeException;
 
-    void updateCategoryName() throws SQLException;
+    void updateCategoryName() throws SQLException,RuntimeException;
 }

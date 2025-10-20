@@ -1,17 +1,27 @@
 package com.lxp.util;
 
+import com.lxp.model.Role;
+
+/**
+ * 로그인 여부, 유저 상태를 체크하는 클래스
+ * - 로그인 여부 -> isSignIn으로 체크
+ * - 로그인 한 유저의 ID -> userId로 체크
+ * - 로그인 한 유저의 역할 -> role.getValue()로 체크
+ */
 public class SignInUtil {
 
     public static boolean isSignIn = false;
     public static long userId;
+    public static Role role;
 
     /**
      * 로그인
      * @param id 로그인 대상 사용자 ID
      */
-    public static void signIn(long id) {
+    public static void signIn(long id, Role r) {
         isSignIn = true;
         userId = id;
+        role = r;
     }
 
     /**
@@ -20,6 +30,7 @@ public class SignInUtil {
     public static void signOut() {
         isSignIn = false;
         userId = 0;
+        role = null;
     }
 
     /**

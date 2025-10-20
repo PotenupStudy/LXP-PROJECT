@@ -4,21 +4,21 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Course {
-    private int courseId;
-    private int userId;
-    private int categoryId;
+    private Long courseId;
+    private Long userId;
+    private Long categoryId;
     private String title;
     private String description;
     private BigDecimal price;
     private CourseLevel courseLevel;
 
-    public static Course createCourse(int userId, int categoryId, String title,
+    public static Course createCourse(Long userId, Long categoryId, String title,
                                       String description, BigDecimal price, CourseLevel courseLevel) {
         validateForCreate(userId, categoryId, title, price, courseLevel);
         return new Course(userId, categoryId, title, description, price, courseLevel);
     }
 
-    private Course(int userId, int categoryId, String title, String description, BigDecimal price, CourseLevel courseLevel) {
+    private Course(Long userId, Long categoryId, String title, String description, BigDecimal price, CourseLevel courseLevel) {
         this.userId = userId;
         this.categoryId = categoryId;
         this.title = title;
@@ -27,7 +27,7 @@ public class Course {
         this.courseLevel = courseLevel;
     }
 
-    public Course(int courseId, int userId, int categoryId, String title, String description, BigDecimal price, CourseLevel courseLevel) {
+    public Course(Long courseId, Long userId, Long categoryId, String title, String description, BigDecimal price, CourseLevel courseLevel) {
         this.courseId = courseId;
         this.userId = userId;
         this.categoryId = categoryId;
@@ -37,15 +37,15 @@ public class Course {
         this.courseLevel = courseLevel;
     }
 
-    public int getCourseId() {
+    public Long getCourseId() {
         return courseId;
     }
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public int getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
@@ -65,7 +65,7 @@ public class Course {
         return courseLevel;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -88,7 +88,7 @@ public class Course {
     /**
      * 강좌 생성시 필수 필드 검증
      */
-   private static void validateForCreate(int userId, int categoryId, String title, BigDecimal price, CourseLevel courseLevel){
+   private static void validateForCreate(Long userId, Long categoryId, String title, BigDecimal price, CourseLevel courseLevel){
         validateUserId(userId);
         validateCategoryId(categoryId);
         validatePrice(price);
@@ -118,14 +118,14 @@ public class Course {
     /**
      * 강좌 ID 검증 (양수)
      */
-    private static void validateCourseId(int courseId) {
+    private static void validateCourseId(Long courseId) {
         if (courseId <= 0)
             throw new IllegalArgumentException("courseId must be positive");
     }
     /**
      * 사용자 ID 검증 (양수)
      */
-    private static void validateUserId(int userId) {
+    private static void validateUserId(Long userId) {
         if (userId <= 0)
             throw new IllegalArgumentException("userId must be positive");
     }
@@ -133,7 +133,7 @@ public class Course {
     /**
      * 카테고리 ID 검증 (양수)
      */
-    private static void validateCategoryId(int categoryId) {
+    private static void validateCategoryId(Long categoryId) {
         if (categoryId <= 0)
             throw new IllegalArgumentException("categoryId must be positive");
     }
