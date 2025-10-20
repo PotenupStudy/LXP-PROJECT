@@ -2,32 +2,27 @@ package com.lxp;
 
 import com.lxp.config.JDBCConnection;
 import com.lxp.controller.CategoryController;
+import com.lxp.controller.CourseController;
 import com.lxp.controller.UserController;
 import com.lxp.model.Lecture;
 import com.lxp.model.LectureResource;
 import com.lxp.model.ResourceType;
 import com.lxp.service.LectureService;
 
+import com.lxp.model.*;
 import com.lxp.model.dto.ViewSectionDto;
-import com.lxp.service.SectionService;
-import com.lxp.service.SectionServiceImpl;
+import com.lxp.service.*;
 import com.lxp.util.Validator;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 
-import com.lxp.model.Category;
-import com.lxp.service.CategoryService;
 import com.lxp.util.CategoryFactory;
 import com.lxp.util.InputUtil;
 import com.lxp.util.Validator;
 import com.lxp.model.dto.RegisterUserDto;
 import com.lxp.util.SignInUtil;
-import com.lxp.model.Course;
-import com.lxp.model.CourseLevel;
-import com.lxp.service.CourseService;
-import com.lxp.service.CourseServiceImpl;
 import com.lxp.util.SignInUtil;
 
 import java.math.BigDecimal;
@@ -283,92 +278,9 @@ public class Application {
      * @param conn
      */
     public static void runCourseFeature(Connection conn) {
-        //TODO 필요한거 있으면 넣기(Controller, Service 선언 등)
-        Scanner sc = new Scanner(System.in);
-        CourseService courseService = new CourseServiceImpl(conn);
+        CourseController courseController = new CourseController(conn);
+        courseController.runCourseFeature(conn);
 
-
-        while (true) {
-            System.out.println();
-            System.out.println("===================================");
-            System.out.println("==  [강의 시스템] - 강좌 관련 업무   ==");
-            System.out.println("===================================");
-            System.out.println("== 1. 강좌 조회                   ==");
-
-            // if(로그인 사용자 && 강사)
-            System.out.println("== 2. 강좌 생성                   ==");
-            System.out.println("== 3. 강좌 수정                   ==");
-            System.out.println("== 4. 강좌 삭제                   ==");
-            //
-            System.out.println("== 5. 이전으로 돌아가기            ==");
-            System.out.println("===================================");
-            int cmd = sc.nextInt();
-            sc.nextLine();
-
-            switch (cmd) {
-                case 1 -> { // 강좌 조회
-                    List<Course> list =  courseService.courseFindAll();
-                    list.forEach(item -> System.out.println(item.toString()));
-
-                }
-                case 2 -> { // 강좌 생성
-                    System.out.print("카테고리ID : ");
-                    Long categoryId = sc.nextLong();
-                    sc.nextLine();
-
-                    System.out.print("강좌 제목 : ");
-                    String title = sc.nextLine();
-
-                    System.out.print("강좌 설명 : ");
-                    String description = sc.nextLine();
-
-                    System.out.print("강좌 가격 : ");
-                    int price = sc.nextInt();
-                    sc.nextLine();
-
-                    System.out.print("강좌 난이도(BEGINNER, intermediate, advanced ) : ");
-                    String level = sc.nextLine();
-
-                    Course newCourse = Course.createCourse(
-                            1L, categoryId, title, description,
-                            BigDecimal.valueOf(price), CourseLevel.valueOf(level)
-                    );
-
-                    Long savedId = courseService.courseSave(newCourse);
-                    System.out.println("   ✅ 생성 완료: ID=" + savedId + "\n");
-                }
-                case 3 -> {
-                    System.out.print("수정 강좌ID : ");
-                    Long updateId = (long) sc.nextInt();
-                    sc.nextLine();
-
-                    Course updateCourse = courseService.findByCourseId(updateId);
-                    System.out.println("[수정 대상 강좌 정보]");
-                    System.out.println(updateCourse.toString() + "\n");
-
-                    System.out.print("강좌 제목 : ");
-                    updateCourse.setTitle(sc.nextLine());
-                    System.out.print("강좌 설명 : ");
-                    updateCourse.setDescription(sc.nextLine());
-                    Long updateResult = courseService.courseUpdateByCourseId(updateCourse);
-
-                    System.out.println("✅ 수정 완료: ID=" + updateId + "\n");
-
-                }
-                case 4 -> { // 강좌 논리 삭제
-                    System.out.print("삭제 강좌ID : ");
-                    int deleteId = sc.nextInt();
-                    Long deleteResult = courseService.softDeleteCourseByCourseId((long) deleteId);
-                    System.out.print(deleteResult + " 강좌가 삭제되었습니다.");
-                }
-                case 5 -> { // 이전으로 돌아가기
-                    return;
-                }
-                default -> {
-                    System.out.println("잘못된 입력 입니다.");
-                }
-            }
-        }
     }
 
     /**
