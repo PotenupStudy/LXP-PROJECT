@@ -66,4 +66,17 @@
         WHERE resource_id = ?
     </query>
 
+    <query key="lecture.existBySectionIdAndOrderNum">
+        SELECT COUNT(*)
+        FROM Lecture
+        WHERE section_id = ? AND lecture_order = ?
+    </query>
+
+    <query key="lr.existByLectureIdAndOrderNum">
+        SELECT COUNT(*)
+        FROM LectureResource
+        WHERE lecture_id = ? AND order_index = ?
+    </query>
+
+
 </properties>
