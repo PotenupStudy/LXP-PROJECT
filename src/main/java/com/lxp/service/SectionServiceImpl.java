@@ -30,6 +30,13 @@ public class SectionServiceImpl implements SectionService {
         // 사용자가 강사 역할인지 확인
         SignInUtil.validateInstructor();
 
+        Course course = courseDao.findByCourseId(courseId);
+        if (course == null) {
+            throw new RuntimeException("ID가 " + courseId + "인 강좌를 찾을 수 없습니다.");
+        }
+
+        assertSectionOwner(course);
+
         // 강좌가 존재하는 강좌인지 확인하는 로직
         if (!courseDao.existById(courseId)) {
             throw new RuntimeException("존재 하지 않는 강좌입니다.");
@@ -124,7 +131,7 @@ public class SectionServiceImpl implements SectionService {
 
     private void assertSectionOwner(Course course) {
         if (!Objects.equals(course.getUserId(), SignInUtil.userId)) {
-            throw new RuntimeException("해당 섹션을 삭제할 권한이 없습니다.");
+            throw new RuntimeException("해당 섹션에 대한 권한이 없습니다.");
         }
     }
 }
