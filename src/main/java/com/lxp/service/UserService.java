@@ -59,6 +59,8 @@ public class UserService {
             User foundUser = userDao.findUserByEmail(email);
             if(foundUser == null) {
                 throw new RuntimeException("사용자를 찾을 수 없습니다.");
+            } else if (foundUser.getDeleteDate() != null) {
+                throw new RuntimeException("탈퇴한 사용자입니다.");
             }
 
             SignInUtil.signIn(foundUser.getUserId() ,foundUser.getRole());
