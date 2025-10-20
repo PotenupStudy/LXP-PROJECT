@@ -82,6 +82,11 @@ public class SectionServiceImpl implements SectionService {
         // 본인이 등록한 섹션인지 확인
         Long courseId = existingSection.getCourseId();
         Course course = courseDao.findByCourseId(courseId);
+
+        if (course == null) {
+            throw new RuntimeException("ID가 " + courseId + "인 강좌를 찾을 수 없습니다.");
+        }
+
         assertSectionOwner(course);
 
         if (!existingSection.getOrderNum().equals(newOrderNum)) {
@@ -107,6 +112,11 @@ public class SectionServiceImpl implements SectionService {
         // 본인이 등록한 섹션인지 확인
         Long courseId = existingSection.getCourseId();
         Course course = courseDao.findByCourseId(courseId);
+
+        if (course == null) {
+            throw new RuntimeException("ID가 " + courseId + "인 강좌를 찾을 수 없습니다.");
+        }
+
         assertSectionOwner(course);
 
         sectionDao.deleteSection(sectionId);
