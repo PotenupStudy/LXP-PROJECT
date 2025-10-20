@@ -8,6 +8,7 @@ import com.lxp.model.Lecture;
 import com.lxp.model.LectureResource;
 import com.lxp.model.ResourceType;
 import com.lxp.service.LectureService;
+import com.lxp.util.InputUtil;
 
 import com.lxp.model.*;
 import com.lxp.model.dto.ViewSectionDto;
@@ -579,8 +580,7 @@ public class Application {
 
             switch (cmd) {
                 case 1 -> { // 강의 조회
-                    System.out.println("조회할 강의의 섹션ID를 입력해주세요.");
-                    long sectionId = sc.nextLong();
+                    long sectionId = LectureService.ConsoleIo.readLong(sc, "조회할 강의의 섹션ID를 입력해주세요.");
                     sc.nextLine();
 
                     if (sectionId <= 0) {
@@ -597,9 +597,8 @@ public class Application {
                     }
                 }
                 case 2 -> { // 강의 등록
-                    System.out.println("등록할 강의의 섹션ID를 입력해주세요.");
-                    long sectionId = sc.nextLong();
-                    sc.nextLine();
+
+                    long sectionId = LectureService.ConsoleIo.readLong(sc, "등록할 강의의 섹션ID를 입력해주세요.");
 
                     try {
                         LectureService.Validators.requireId(sectionId, "섹션 ID");
@@ -611,9 +610,8 @@ public class Application {
                         System.out.println("등록할 강의의 설명을 입력해주세요.");
                         String description = sc.nextLine();
 
-                        System.out.println("등록할 강의의 순서를 입력해주세요.");
-                        int order = sc.nextInt();
-                        sc.nextLine();
+                        int order = LectureService.ConsoleIo.readInt(sc, "등록할 강의의 순서를 입력해주세요.");
+
                         if (order <= 0) throw new IllegalArgumentException("순서는 1 이상의 정수여야 합니다.");
 
                         Lecture lecture = new Lecture(sectionId, title, description, order);
@@ -628,9 +626,7 @@ public class Application {
                 }
 
                 case 3 -> { // 강의 수정
-                    System.out.println("수정할 강의의 섹션ID를 입력해주세요.");
-                    long section_id = sc.nextLong();
-                    sc.nextLine();
+                    long section_id = LectureService.ConsoleIo.readLong(sc, "수정할 강의의 섹션ID를 입력해주세요.");
 
                     List<Lecture> lectures = lectureService.findAllLectures(section_id);
                     if (lectures.isEmpty()) {
@@ -645,9 +641,7 @@ public class Application {
                         System.out.println(lecture);
                     }
 
-                    System.out.println("수정할 강의의 Lecture ID를 입력해주세요.");
-                    long lecture_id = sc.nextLong();
-                    sc.nextLine();
+                    long lecture_id = LectureService.ConsoleIo.readLong(sc, "수정할 강의의 Lecture ID를 입력해주세요.");
 
                     try {
                         LectureService.Validators.requireId(lecture_id, "렉쳐 ID");
@@ -659,8 +653,7 @@ public class Application {
                         System.out.println("등록할 강의의 설명을 입력해주세요.");
                         String description = sc.nextLine();
 
-                        System.out.println("등록할 강의의 순서를 입력해주세요.");
-                        int order = sc.nextInt();
+                        int order = LectureService.ConsoleIo.readInt(sc, "등록할 강의의 순서를 입력해주세요.");
                         sc.nextLine();
                         if (order <= 0) throw new IllegalArgumentException("순서는 1 이상의 정수여야 합니다.");
 
@@ -676,9 +669,7 @@ public class Application {
                 }
 
                 case 4 -> { // 강의 삭제
-                    System.out.println("삭제할 강의의 섹션ID를 입력해주세요.");
-                    long section_id = sc.nextInt();
-                    sc.nextLine();
+                    long section_id = LectureService.ConsoleIo.readLong(sc, "삭제할 강의의 섹션ID를 입력해주세요.");
 
                     List<Lecture> lectures = lectureService.findAllLectures(section_id);
                     if (lectures.isEmpty()) {
@@ -692,17 +683,13 @@ public class Application {
                     for (Lecture lecture : lectures) {
                         System.out.println(lecture);
                     }
-                    System.out.println("삭제할 강의의 Lecture ID를 입력해주세요.");
-                    long lecture_id = sc.nextInt();
-                    sc.nextLine();
+                    long lecture_id = LectureService.ConsoleIo.readLong(sc, "삭제할 강의의 Lecture ID를 입력해주세요.");
 
                     if (lecture_id <= 0) {
                         System.out.println("1 이상의 정수로 입력해주세요");
                         continue;
                     }
-                    System.out.println("선택된 Lecture ID : " + lecture_id + " 정말 삭제하시겠습니까? 1:예 / 2:아니오");
-                    int choice = sc.nextInt();
-                    sc.nextLine();
+                    int choice = LectureService.ConsoleIo.readInt(sc, "선택된 Lecture ID : " + lecture_id + " 정말 삭제하시겠습니까? 1:예 / 2:아니오");
 
                     if (choice == 1) {
                         Lecture lecture = new Lecture(section_id, lecture_id);
@@ -753,9 +740,7 @@ public class Application {
 
             switch (cmd) {
                 case 1 -> { // 리소스 조회
-                    System.out.println("조회할 강의의 Lecture ID를 입력해주세요.");
-                    long lectureId = sc.nextLong();
-                    sc.nextLine();
+                    long lectureId = LectureService.ConsoleIo.readLong(sc, "조회할 강의의 Lecture ID를 입력해주세요.");
 
                     if (lectureId <= 0) {
                         System.out.println("1 이상의 정수를 입력해주세요.");
@@ -768,8 +753,7 @@ public class Application {
 
                 case 2 -> { // 리소스 등록
                     System.out.println("등록할 강의 리소스의 Lecture ID를 입력해주세요.");
-                    long lectureId = sc.nextLong();
-                    sc.nextLine();
+                    long lectureId = LectureService.ConsoleIo.readLong(sc, "등록할 강의 리소스의 Lecture ID를 입력해주세요.");
 
                     try {
                         LectureService.Validators.requireId(lectureId, "Lecture ID");
@@ -786,14 +770,13 @@ public class Application {
                         String resourceUrl = sc.nextLine();
                         LectureService.Validators.requireUrl(resourceUrl); // ️URL 검증
 
-                        System.out.println("등록할 강의 리소스의 순서를 입력해주세요.");
-                        int resourceOrder = sc.nextInt();
-                        sc.nextLine();
+                        int resourceOrder = LectureService.ConsoleIo.readInt(sc, "등록할 강의 리소스의 순서를 입력해주세요.");
+
+
                         if (resourceOrder <= 0) throw new IllegalArgumentException("순서는 1 이상의 정수여야 합니다.");
 
-                        System.out.println("등록할 강의 리소스의 영상 길이(초). * vod가 아니면 0");
-                        int resourceDuration = sc.nextInt();
-                        sc.nextLine();
+                        int resourceDuration = LectureService.ConsoleIo.readInt(sc, "등록할 강의 리소스의 영상 길이(초). * vod가 아니면 0");
+
                         LectureService.Validators.requireResourceDuration(resourceType, resourceDuration); // 영상 길이 규칙
 
                         LectureResource resource = new LectureResource(
@@ -810,17 +793,14 @@ public class Application {
                 }
 
                 case 3 -> { // 리소스 수정
-                    System.out.println("수정할 리소스의 Lecture ID를 입력해주세요.");
-                    long lectureId = sc.nextLong();
-                    sc.nextLine();
+                    long lectureId = LectureService.ConsoleIo.readLong(sc, "수정할 리소스의 Lecture ID를 입력해주세요.");
 
                     for (LectureResource rs : lectureService.findAllResources(lectureId)) {
                         System.out.println(rs);
                     }
 
-                    System.out.println("수정할 리소스의 Resource ID를 입력해주세요.");
-                    long resourceId = sc.nextLong();
-                    sc.nextLine();
+                    long resourceId = LectureService.ConsoleIo.readLong(sc,"수정할 리소스의 Resource ID를 입력해주세요.");
+
 
                     try {
                         LectureService.Validators.requireId(lectureId, "Lecture ID");
@@ -838,14 +818,12 @@ public class Application {
                         String resourceUrl = sc.nextLine();
                         LectureService.Validators.requireUrl(resourceUrl);
 
-                        System.out.println("리소스 순서를 입력해주세요.");
-                        int resourceOrder = sc.nextInt();
-                        sc.nextLine();
+                        int resourceOrder = LectureService.ConsoleIo.readInt(sc, "리소스 순서를 입력해주세요.");
+
                         if (resourceOrder <= 0) throw new IllegalArgumentException("순서는 1 이상의 정수여야 합니다.");
 
-                        System.out.println("리소스가 vod라면 영상 길이를 입력해주세요. 아니라면 0을 입력해주세요.");
-                        int resourceDuration = sc.nextInt();
-                        sc.nextLine();
+                        int resourceDuration = LectureService.ConsoleIo.readInt(sc, "리소스가 vod라면 영상 길이를 입력해주세요. 아니라면 0을 입력해주세요.");
+
                         LectureService.Validators.requireResourceDuration(resourceType, resourceDuration);
 
                         LectureResource resource = new LectureResource(
@@ -862,28 +840,25 @@ public class Application {
                 }
 
                 case 4 -> { // 리소스 삭제
-                    System.out.println("삭제할 리소스의 resourceID를 입력하세요.");
-                    long resourceId = sc.nextLong();
-                    sc.nextLine();
+                    long resourceId = LectureService.ConsoleIo.readLong(sc, "삭제할 리소스의 resourceID를 입력하세요.");
 
                     if (resourceId <= 0) {
                         System.out.println("1 이상의 정수를 입력해 주세요.");
                         continue;
                     }
-
-                    System.out.println("선택된 Resource ID : " + resourceId + " 정말 삭제하시겠습니까? 1:예 / 2:아니오");
-                    int choice = sc.nextInt();
+                    int choice = LectureService.ConsoleIo.readInt(sc, "선택된 Resource ID : " + resourceId + " 정말 삭제하시겠습니까? 1:예 / 2:아니오");
 
                     if (choice == 1) {
                         lectureService.deleteResource(resourceId);
-                        System.out.println("삭제 성공! 삭제된 Resource ID : " + resourceId);
+                        System.out.println( "삭제 성공! 삭제된 Resource ID : " + resourceId);
 
                     } else if (choice == 2) {
                         System.out.println("삭제를 취소합니다. 이전으로 돌아갑니다.");
                         return;
+                    } else {
+                        System.out.println("잘못된 번호입니다.");
+                        return;
                     }
-                    System.out.println("잘못된 번호입니다. 이전 메뉴로 돌아갑니다");
-                    return;
                 }
                 case 5 -> { // 이전으로 돌아가기
                     return;
