@@ -107,6 +107,27 @@ public class LectureDAO {
         return 0;
     }
 
+    public long deleteAll(long sectionId) throws SQLException {
+        String sql = QueryUtil.getQuery("lecture.deleteAll");
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setLong(1, sectionId);
+
+            int result = pstmt.executeUpdate();
+            if (result <= 0) {
+                try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("DB 삭제 중 오류 발생");
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
     public List<LectureResource> findAllLr(long userInputLectureId) throws SQLException {
         String sql = QueryUtil.getQuery("lr.findAll");
         List<LectureResource> list = new ArrayList<>();

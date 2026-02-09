@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class LectureService {
 
@@ -55,6 +56,19 @@ public class LectureService {
         long result = 0;
         try {
             result = lectureDAO.delete(lecture);
+            if (result > 0) {
+                return result;
+            }
+        } catch (RuntimeException e) {
+            System.out.println("강의 삭제 실패");
+        }
+        return result;
+    }
+
+    public long deleteAllLecture(long sectionId) throws Exception {
+        long result = 0;
+        try {
+            result = lectureDAO.deleteAll(sectionId);
             if (result > 0) {
                 return result;
             }
@@ -138,4 +152,37 @@ public class LectureService {
         }
     }
 
+    public final class ConsoleIo {
+        private ConsoleIo() {}
+
+        public static long readLong(Scanner sc, String prompt) {
+            while (true) {
+                System.out.println(prompt);
+                String line = sc.nextLine().trim();
+                try{
+                    long v = Long.parseLong(line);
+                    if (v <= 0) throw new NumberFormatException();
+                    return v;
+                } catch (NumberFormatException e) {
+                    System.out.println("1 이상의 정수로만 입력해 주세요");
+                }
+            }
+        }
+
+        public static int readInt(Scanner sc, String prompt) {
+            while (true) {
+
+
+                System.out.println(prompt);
+                String line = sc.nextLine().trim();
+                try {
+                    int v = Integer.parseInt(line);
+                    if (v <= 0) throw new NumberFormatException();
+                    return v;
+                } catch (NumberFormatException e) {
+                    System.out.println("1 이상의 정수로만 입력해주세요.");
+                }
+            }
+        }
+    }
 }
